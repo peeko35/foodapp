@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".Stall_Account">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:scrollbars="none"
+        android:layout_height="match_parent"
+
+        app:layout_constraintBaseline_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imgback"
+            android:layout_width="35dp"
+            android:layout_height="33dp"
+            android:src="@drawable/backbutton"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="7dp" />
+
+        <TextView
+            android:layout_width="163dp"
+            android:layout_height="48dp"
+            android:text="Stall Details"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="124dp"
+            tools:layout_editor_absoluteY="7dp"
+           app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgback"
+            app:layout_constraintTop_toTopOf="@+id/imgback"/>
+
+
+        <EditText
+            android:id="@+id/editviewname"
+            android:layout_width="344dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="84dp"
+            android:background="@drawable/vendorinput"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/enter_food_name"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/descption"
+            android:layout_width="334dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="36dp"
+
+            android:layout_marginTop="164dp"
+            android:background="@drawable/vendorinput"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/food_descrption"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="344dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="256dp"
+            android:background="@drawable/vendorinput"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/food_price"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:layout_width="166dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="336dp"
+            android:text="Select image"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="226dp"
+            android:layout_height="116dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="372dp"
+            android:src="@drawable/addimg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="532dp"
+            android:text="Upload"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:layout_width="133dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="152dp"
+            android:layout_marginTop="632dp"
+            android:text="Save"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

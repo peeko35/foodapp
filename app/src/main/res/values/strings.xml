@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="UserLogin">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password\n</string>
+    <string name="register">Register</string>
+    <string name="Address">Address</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="click_to_register">Click to Register</string>
+    <string name="logout">Logout</string>
+
+
+    <string name="sign_in">Sign In</string>
+    <string name="otp">OTP</string>
+
+
+    <string name="vendorhome">Logout</string>
+    <string name="signin">Login</string>
+    <string name="email_address">Enter Email Address</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="vendorlogin">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="or">--------------------------------- OR -------------------------------</string>
+    <string name="VendorRegister">Register</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="already_have_an_account">Already Registered?</string>
+    <string name="pwd_reg">Password</string>
+    <string name="vendorreg">Register</string>
+    <string name="signn">Sign In</string>
+    <string name="vendor_name">Enter Name</string>
+    <string name="vendor_welcome">Welcome</string>
+    <string name="create_account">Create Account</string>
+    <string name="stall_account">Stall Account</string>
+
+    <string name="items">Items</string>
+    <string name="stall_menu">Stall Menu</string>
+    <string name="food_price">Food Price</string>
+    <string name="food_descrption">Food Descrption</string>
+    <string name="enter_food_name">Enter Food Name</string>
+    <string name="enter_city">Enter City</string>
+    <string name="stall_address">Stall address</string>
+    <string name="stall_name">Stall Name</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="create_your_profile">Create Your Profile</string>
+    <string name="submit">Submit</string>
+    <string name="save">Save</string>
+    <string name="phone">Phone</string>
+
+
+</resources>

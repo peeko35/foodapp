@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fooods"
+    tools:context=".Vendor_Register">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/vennreg"
+                android:layout_width="306dp"
+                android:layout_height="63dp"
+                android:layout_marginTop="124dp"
+
+                android:gravity="center"
+                android:text="@string/VendorRegister"
+                android:textColor="#E8DCDC"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.657"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/venemail"
+                android:layout_width="267dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="244dp"
+                android:autofillHints="emailAddress"
+                android:background="@drawable/input_bg"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/enter_email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="13dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.562"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_reg"
+                android:layout_width="124dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="432dp"
+                android:background="#4CAF50"
+                android:text="@string/vendorreg"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/pwwd"
+                android:layout_width="270dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="328dp"
+                android:autofillHints="phone"
+                android:background="@drawable/input_bg"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/pwd_reg"
+                android:inputType="textPassword"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="13dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.574"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/oor"
+                android:layout_width="402dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="40dp"
+                android:text="@string/or"
+                android:textColor="#ECEAE6"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.444"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_reg" />
+
+            <TextView
+                android:id="@+id/alredyacc"
+                android:layout_width="212dp"
+                android:layout_height="27dp"
+                android:layout_marginTop="28dp"
+                android:text="@string/already_have_an_account"
+                android:textColor="#E8DDDD"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/oor" />
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="86dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="28dp"
+                android:clickable="true"
+                android:text="@string/signn"
+                android:textColor="#78D607"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.781"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/oor" />
+
+            <ProgressBar
+                android:id="@+id/bbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="624dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
+
+
