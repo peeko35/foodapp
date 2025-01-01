@@ -1,19 +1,27 @@
 package com.example.myapplication;
 
 public class Vendors {
-    String PhoneNumber,selectedLocation,stallName,address,pinCode;
+    String vendorId,PhoneNumber,selectedLocation,stallName,address,pinCode;
 
 
     public Vendors() {
     }
 
     public Vendors(String phoneno, String location, String stallnm, String addres, String pincode) {
+        this.vendorId = vendorId;
         this.PhoneNumber = phoneno;
         this.selectedLocation = location;
         this.stallName = stallnm;
         this.address = addres;
         this.pinCode = pincode;
     }
+    public String getVendorId() {
+        return vendorId;
+    }
+    public void setVendorId(String vendorId) {
+        this.vendorId = vendorId;
+    }
+
 
     public String getPhoneno() {
         return PhoneNumber;

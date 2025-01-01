@@ -11,17 +11,20 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Vendor_Profile extends AppCompatActivity {
     EditText vendorPh,stallname,addr,pincode;
     Spinner locspin;
     Button btn_save;
-    FirebaseDatabase db;
+   // FirebaseDatabase db;
 
     private DatabaseReference databaseReference;
-
+    private DatabaseReference idReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,7 @@ public class Vendor_Profile extends AppCompatActivity {
 
         // Initialize Firebase Database reference
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
+        idReference = FirebaseDatabase.getInstance().getReference("VendorIDs");
 
         String[] locations={"select location","GhatKopar","Dadar","Matunga","Thane"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
@@ -47,14 +51,14 @@ public class Vendor_Profile extends AppCompatActivity {
                 String selectedLocation = locspin.getSelectedItem().toString();
                 String address = addr.getText().toString().trim();
                 String pinCode = pincode.getText().toString();
-                String PhoneNumber=vendorPh.getText().toString();
+                String phoneNumber=vendorPh.getText().toString();
                 String stallName = stallname.getText().toString().trim();
 
-                if (PhoneNumber.isEmpty()) {
+                if (phoneNumber.isEmpty()) {
                     vendorPh.setError("Phone number is required");
                     vendorPh.requestFocus();
                     return;
-                } else if (!PhoneNumber.matches("\\d{10}")) {
+                } else if (!phoneNumber.matches("\\d{10}")) {
                     vendorPh.setError("Phone number must be a 10-digit number");
                     vendorPh.requestFocus();
                     return;
@@ -84,26 +88,40 @@ public class Vendor_Profile extends AppCompatActivity {
                     pincode.requestFocus();
                     return;
                 }
-                Vendors vendor = new Vendors(PhoneNumber, stallName, selectedLocation, address, pinCode);
-                db=FirebaseDatabase.getInstance();
-                String vendorId = databaseReference.push().getKey();
-                if (vendorId != null) {
-                    databaseReference.child(vendorId).setValue(vendor).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(Vendor_Profile.this, "Profile saved successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(Vendor_Profile.this,VendorHome.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(Vendor_Profile.this, "Failed to save profile. Please try again.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                // Generate unique ID for the vendor
+                idReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        long vendorId = snapshot.exists() ? snapshot.getValue(Long.class) : 1000; // Start from 1000
+                        idReference.setValue(vendorId + 1); // Increment ID for the next vendor
+
+                        Vendors vendor = new Vendors(String.valueOf(vendorId), phoneNumber, stallName, selectedLocation, address, pinCode);
+
+                        databaseReference.child(String.valueOf(vendorId)).setValue(vendor).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Vendor_Profile.this, "Profile saved successfully", Toast.LENGTH_SHORT).show();
+
+                                // Pass vendorId to VendorHome
+                                Intent intent = new Intent(Vendor_Profile.this, VendorHome.class);
+                                intent.putExtra("vendorId", String.valueOf(vendorId));
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(Vendor_Profile.this, "Failed to save profile. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Toast.makeText(Vendor_Profile.this, "Error generating Vendor ID. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
-
     }
     public static class Vendors {
+        public String vendorId;
         public String phoneNumber;
         public String stallName;
         public String selectedLocation;
@@ -114,7 +132,8 @@ public class Vendor_Profile extends AppCompatActivity {
             // Default constructor required for Firebase
         }
 
-        public Vendors(String phoneNumber, String stallName, String selectedLocation, String address, String pinCode) {
+        public Vendors(String vendorId, String phoneNumber, String stallName, String selectedLocation, String address, String pinCode) {
+            this.vendorId = vendorId;
             this.phoneNumber = phoneNumber;
             this.stallName = stallName;
             this.selectedLocation = selectedLocation;
@@ -122,5 +141,7 @@ public class Vendor_Profile extends AppCompatActivity {
             this.pinCode = pinCode;
         }
     }
-
 }
+
+
+

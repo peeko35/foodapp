@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+
 
     <application
         android:allowBackup="true"
@@ -60,6 +64,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://798546793531394:ZpfhSbCjyOG1mK-krYrya-UJgC0@dytcsiqv5"/>
     </application>
 
 </manifest>
