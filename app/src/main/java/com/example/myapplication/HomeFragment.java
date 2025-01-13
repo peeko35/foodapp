@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     Address address = addresses.get(0);
 
-                    String strAddress = "Addressline" + address.getAddressLine(0) + "\n" +
+                    String strAddress = "" + address.getAddressLine(0) + "\n" +
                             "Admin Area:" + address.getAdminArea() + "\n" +
                             "Country Name:" + address.getCountryName() + "\n" +
                             "Feature Name:" + address.getFeatureName() + "\n" +

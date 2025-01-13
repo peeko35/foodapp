@@ -51,6 +51,7 @@
     <string name="home_fragment">Home Fragment</string>
     <string name="favourite">Favourite</string>
     <string name="search_fragment">Search Fragment</string>
+    <string name="name">Name</string>
 
 
 </resources>

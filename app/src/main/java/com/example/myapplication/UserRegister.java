@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserRegister extends AppCompatActivity {
-    TextInputEditText editTextEmail,editTextPassword,editTextadd;
+    EditText editTextEmail,editTextPassword,editTextname;
     Button buttoReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -44,7 +45,7 @@ public class UserRegister extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         editTextEmail=findViewById(R.id.email);
         editTextPassword=findViewById(R.id.password);
-        editTextadd=findViewById(R.id.address);
+        editTextname=findViewById(R.id.UserName);
         buttoReg=findViewById(R.id.btn_register);
         progressBar=findViewById(R.id.progressBar);
         textView=findViewById(R.id.loginNow);
@@ -62,10 +63,10 @@ public class UserRegister extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email,password,addr;
+                String email,password,nam;
                 email=String.valueOf(editTextEmail.getText());
                 password=String.valueOf(editTextPassword.getText());
-                addr=String.valueOf(editTextadd.getText());
+                nam=String.valueOf(editTextname.getText());
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(UserRegister.this,"Enter the Email",Toast.LENGTH_SHORT).show();
@@ -75,8 +76,8 @@ public class UserRegister extends AppCompatActivity {
                     Toast.makeText(UserRegister.this,"Enter the password",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(addr)){
-                    Toast.makeText(UserRegister.this,"Enter the address",Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(nam)){
+                    Toast.makeText(UserRegister.this,"Enter the Name",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mAuth.createUserWithEmailAndPassword(email, password)

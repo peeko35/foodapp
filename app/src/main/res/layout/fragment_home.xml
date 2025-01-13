@@ -9,36 +9,46 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <!-- ViewFlipper -->
+    <LinearLayout
+        android:id="@+id/locationContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/locpin"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/locationpin" />
+
+        <TextView
+            android:id="@+id/textmp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:text="Your Location"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <ViewFlipper
         android:id="@+id/v_flipper"
-        android:layout_width="357dp"
-        android:layout_height="198dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="83dp" />
-
-    <ImageView
-        android:id="@+id/locpin"
-        android:layout_width="73dp"
-        android:layout_height="46dp"
-        android:src="@drawable/locationpin"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="7dp" />
-
-    <TextView
-        android:id="@+id/textmp"
-        android:layout_width="104dp"
-        android:layout_height="20dp"
-        android:text="TextView"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="28dp" />
-
-    <!-- Add more speakable content or layout components here -->
-
-
-
+        android:layout_width="366dp"
+        android:layout_height="215dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.355"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locationContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
