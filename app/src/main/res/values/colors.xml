@@ -9,5 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="textColor">#53E88B</color>
     <color name="lavender">#8692f7</color>
-
+    <color name="colorPrimary">#41D3BD</color>
+    <color name="colorPrimaryDark">#41D3BD</color>
+    <color name="colorAccent">#FDA14F</color>
+    <color name="colorTextIcons">#FFFFFF</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="colorRatingActive">#FDA14F</color>
+    <color name="colorRatingInActive">#C9C9D1</color>
+    <color name="colorBackground">#EEEEEE</color>
 </resources>

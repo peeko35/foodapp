@@ -1,14 +1,12 @@
 package com.example.myapplication;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -22,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
@@ -32,10 +29,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,7 +119,7 @@ public class Stall_Account extends AppCompatActivity {
                 Toast.makeText(this, "Please upload an image first", Toast.LENGTH_SHORT).show();
                 return;
             }
-            savefoodDetails();
+            savefoodDetails(vendorId);
         });
 
 
@@ -150,46 +145,38 @@ public class Stall_Account extends AppCompatActivity {
         //config.put("secure", true);
         MediaManager.init(this, config);
     }
-    private void savefoodDetails() {
-        String FoodName = editviewname.getText().toString().trim();
-        String description = descption.getText().toString().trim();
-        String vprice = price.getText().toString().trim();
+    private void savefoodDetails(String vendorId) {
+        String foodName = editviewname.getText().toString().trim();
+        String desc = descption.getText().toString().trim();
+        String foodPrice = price.getText().toString().trim();
 
-        if (FoodName.isEmpty() || description.isEmpty() || vprice.isEmpty()) {
+        if (foodName.isEmpty() || desc.isEmpty() || foodPrice.isEmpty()) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
 
-
-
-        // Create a map for the stall details
         Map<String, Object> stallDetails = new HashMap<>();
-        stallDetails.put("FoodName", FoodName);
-        stallDetails.put("description", description);
-        stallDetails.put("price", vprice);
+        stallDetails.put("foodName", foodName);
+        stallDetails.put("description", desc);
+        stallDetails.put("price", foodPrice);
         stallDetails.put("imageUrl", imageUrl);
 
-
-        String stallId =  vendorDbRef.child(vendorId).child("stallDetails").push().getKey();
-
-        if (stallId != null) {
-            vendorDbRef.child(vendorId).child("stallDetails").child(stallId).setValue(stallDetails)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(Stall_Account.this, "Stall details saved successfully!", Toast.LENGTH_SHORT).show();
-                        // Clear input fields after saving
-                        editviewname.setText("");
-                        descption.setText("");
-                        price.setText("");
-                        selectimg.setImageResource(R.drawable.addimg); // Replace with your placeholder image
-                        imageUrl = null; // Reset image URL
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e(TAG, "saveFoodDetails: Failed to save stall details", e);
-                        Toast.makeText(Stall_Account.this, "Failed to save stall details", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Toast.makeText(this, "Error generating unique stall ID", Toast.LENGTH_SHORT).show();
+        String stallId = vendorDbRef.child(vendorId).child("stallDetails").push().getKey();
+        if (stallId == null) {
+            Toast.makeText(this, "Error saving stall!", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        vendorDbRef.child(vendorId).child("stallDetails").child(stallId).setValue(stallDetails)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Stall saved!", Toast.LENGTH_SHORT).show();
+                    editviewname.setText("");
+                    descption.setText("");
+                    price.setText("");
+                    selectimg.setImageResource(R.drawable.addimg);
+                    imageUrl = null;
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed to save stall!", Toast.LENGTH_SHORT).show());
     }
 
     private void requestPermissions() {

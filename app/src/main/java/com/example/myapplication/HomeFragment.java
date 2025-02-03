@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -12,6 +13,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +29,24 @@ import android.location.LocationManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class HomeFragment extends Fragment {
+
     ViewFlipper v_flipper;
+    RecyclerView recyclerView;
+    List<MainModelrecy>dataList;
+    DatabaseReference databaseReference;
+    ValueEventListener eventListener;
     ImageView locpin;
     TextView textmp;
     private String[] foregroundLocationPermission={Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -49,6 +65,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        recyclerView=view.findViewById(R.id.foodstallsrecylerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        dataList = new ArrayList<>();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
+
+        fetchVendorData();
 
         locpin=view.findViewById(R.id.locpin);
         textmp=view.findViewById(R.id.textmp);
@@ -76,6 +99,43 @@ public class HomeFragment extends Fragment {
 
         return view;
 
+    }
+    private void fetchVendorData() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataList.clear();
+                for (DataSnapshot vendorSnapshot : dataSnapshot.getChildren()) {
+                    // Fetch the stall name
+                    String stallName = vendorSnapshot.child("stallName").getValue(String.class);
+
+                    // Fetch the stallDetails for the vendor
+                    DataSnapshot stallDetailsSnapshot = vendorSnapshot.child("stallDetails");
+
+                    // Fetch each food item details
+                    for (DataSnapshot foodSnapshot : stallDetailsSnapshot.getChildren()) {
+                        String vendorId=foodSnapshot.child("vendorId").getValue(String.class);
+                        String foodName = foodSnapshot.child("foodName").getValue(String.class);
+                        String imageUrl = foodSnapshot.child("imageUrl").getValue(String.class);
+                        String description = foodSnapshot.child("description").getValue(String.class);
+                        String price = foodSnapshot.child("price").getValue(String.class);
+
+                        // Add data to the list
+                        MainModelrecy model = new MainModelrecy(stallName, foodName, imageUrl, description, price,vendorId);
+                        dataList.add(model);
+                    }
+                }
+
+                // Update the adapter with new data
+                MainAdapterrecy mainAdapterrecy = new MainAdapterrecy(requireContext(), dataList); // Fixed context here
+                recyclerView.setAdapter(mainAdapterrecy);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void getAddress(){
         Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());

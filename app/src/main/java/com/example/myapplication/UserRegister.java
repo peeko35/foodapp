@@ -19,6 +19,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserRegister extends AppCompatActivity {
     EditText editTextEmail,editTextPassword,editTextname;
@@ -26,6 +31,7 @@ public class UserRegister extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
+    DatabaseReference databaseReference;
     @Override
     public void onStart() {
         super.onStart();
@@ -49,7 +55,7 @@ public class UserRegister extends AppCompatActivity {
         buttoReg=findViewById(R.id.btn_register);
         progressBar=findViewById(R.id.progressBar);
         textView=findViewById(R.id.loginNow);
-
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,25 +91,39 @@ public class UserRegister extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(UserRegister.this, "Account Created",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent intent=new Intent(getApplicationContext(),UserLogin.class);
-                                    startActivity(intent);
-                                    finish();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                        String userId = user.getUid();
 
+                                        // Create a map to store user details
+                                        Map<String, Object> userDetails = new HashMap<>();
+                                        userDetails.put("name", nam);
+                                        userDetails.put("email", email);
+                                        userDetails.put("id", System.currentTimeMillis()); // Use timestamp as unique ID
 
+                                        // Save user details in the Realtime Database
+                                        databaseReference.child(userId).setValue(userDetails)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        progressBar.setVisibility(View.GONE);
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(UserRegister.this, "Account Created", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(getApplicationContext(), UserLogin.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        } else {
+                                                            Toast.makeText(UserRegister.this, "Failed to save user details", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                    }
                                 } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(UserRegister.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(UserRegister.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-
-
-
             }
         });
     }

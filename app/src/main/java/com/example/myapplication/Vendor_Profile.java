@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,137 +12,83 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Vendor_Profile extends AppCompatActivity {
-    EditText vendorPh,stallname,addr,pincode;
-    Spinner locspin;
-    Button btn_save;
-   // FirebaseDatabase db;
+import java.util.HashMap;
+import java.util.Map;
 
+public class Vendor_Profile extends AppCompatActivity {
+
+
+    private EditText vendorPhone, stallName, stallAddress, pincode;
+    private Spinner locationSpinner;
+    private Button saveButton;
     private DatabaseReference databaseReference;
-    private DatabaseReference idReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_profile);
-        vendorPh=findViewById(R.id.VendorPhone);
-        locspin=findViewById(R.id.locspin);
-        stallname=findViewById(R.id.Stallname);
-        addr=findViewById(R.id.addr);
-        pincode=findViewById(R.id.pincode);
-        btn_save=findViewById(R.id.btn_save);
+        vendorPhone = findViewById(R.id.VendorPhone);
+        stallName = findViewById(R.id.Stallname);
+        stallAddress = findViewById(R.id.addr);
+        pincode = findViewById(R.id.pincode);
+        locationSpinner = findViewById(R.id.locspin);
+        saveButton = findViewById(R.id.btn_save);
 
-        // Initialize Firebase Database reference
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
-        idReference = FirebaseDatabase.getInstance().getReference("VendorIDs");
 
-        String[] locations={"select location","GhatKopar","Dadar","Matunga","Thane"};
+        String[] locations = {"select location", "GhatKopar", "Dadar", "Matunga", "Thane"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locspin.setAdapter(adapter);
+        locationSpinner.setAdapter(adapter);
 
-        btn_save.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String selectedLocation = locspin.getSelectedItem().toString();
-                String address = addr.getText().toString().trim();
-                String pinCode = pincode.getText().toString();
-                String phoneNumber=vendorPh.getText().toString();
-                String stallName = stallname.getText().toString().trim();
-
-                if (phoneNumber.isEmpty()) {
-                    vendorPh.setError("Phone number is required");
-                    vendorPh.requestFocus();
-                    return;
-                } else if (!phoneNumber.matches("\\d{10}")) {
-                    vendorPh.setError("Phone number must be a 10-digit number");
-                    vendorPh.requestFocus();
-                    return;
-                }
-                if (selectedLocation.equals("Select Location")) {
-                    Toast.makeText(Vendor_Profile.this, "Please select a location", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (stallName.isEmpty()) {
-                    stallname.setError("Stall name is required");
-                    stallname.requestFocus();
-                    return;
-                }
-                // Validate Address Details
-                if (address.isEmpty()) {
-                    Toast.makeText(Vendor_Profile.this, "Please enter address", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // Validate Pincode (Ensure it is a 6-digit number)
-                if (pinCode.isEmpty()) {
-                    pincode.setError("Pincode is required");
-                    pincode.requestFocus();
-                    return;
-                } else if (!pinCode.matches("\\d{6}")) {
-                    pincode.setError("Pincode must be a 6-digit number");
-                    pincode.requestFocus();
-                    return;
-                }
-                // Generate unique ID for the vendor
-                idReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        long vendorId = snapshot.exists() ? snapshot.getValue(Long.class) : 1000; // Start from 1000
-                        idReference.setValue(vendorId + 1); // Increment ID for the next vendor
-
-                        Vendors vendor = new Vendors(String.valueOf(vendorId), phoneNumber, stallName, selectedLocation, address, pinCode);
-
-                        databaseReference.child(String.valueOf(vendorId)).setValue(vendor).addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(Vendor_Profile.this, "Profile saved successfully", Toast.LENGTH_SHORT).show();
-
-                                // Pass vendorId to VendorHome
-                                Intent intent = new Intent(Vendor_Profile.this, VendorHome.class);
-                                intent.putExtra("vendorId", String.valueOf(vendorId));
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(Vendor_Profile.this, "Failed to save profile. Please try again.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        Toast.makeText(Vendor_Profile.this, "Error generating Vendor ID. Please try again.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onClick(View v) {
+                saveVendorData();
             }
         });
     }
-    public static class Vendors {
-        public String vendorId;
-        public String phoneNumber;
-        public String stallName;
-        public String selectedLocation;
-        public String address;
-        public String pinCode;
 
-        public Vendors() {
-            // Default constructor required for Firebase
+    private void saveVendorData() {
+        String phone = vendorPhone.getText().toString().trim();
+        String stall = stallName.getText().toString().trim();
+        String address = stallAddress.getText().toString().trim();
+        String pin = pincode.getText().toString().trim();
+        String location = locationSpinner.getSelectedItem().toString();
+
+        if (phone.isEmpty() || stall.isEmpty() || address.isEmpty() || pin.isEmpty() || location.equals("Select location")) {
+            Toast.makeText(this, "All fields are required!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        public Vendors(String vendorId, String phoneNumber, String stallName, String selectedLocation, String address, String pinCode) {
-            this.vendorId = vendorId;
-            this.phoneNumber = phoneNumber;
-            this.stallName = stallName;
-            this.selectedLocation = selectedLocation;
-            this.address = address;
-            this.pinCode = pinCode;
-        }
+        Map<String, Object> vendorData = new HashMap<>();
+        vendorData.put("phone", phone);
+        vendorData.put("stallName", stall);
+        vendorData.put("address", address);
+        vendorData.put("pincode", pin);
+        vendorData.put("location", location);
+
+        String vendorId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        databaseReference.child(vendorId).setValue(vendorData).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Vendor data saved!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, VendorHome.class));
+                finish();
+            } else {
+                Toast.makeText(this, "Failed to save vendor data!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
+
 
 
 
