@@ -75,10 +75,6 @@
                     android:layout_marginLeft="200dp"
                     android:src="@drawable/fav" />
             </LinearLayout>
-
-
-
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
