@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -27,6 +28,8 @@ public class StallDetailActivity extends AppCompatActivity {
     TextView desctext, foodprice;
     ImageView detailimg, ratingstar;
     DatabaseReference databaseReference;
+    Button btn_show_comments;
+    String vendorId;
 
 
     @Override
@@ -38,24 +41,41 @@ public class StallDetailActivity extends AppCompatActivity {
         foodprice = findViewById(R.id.foodprice);
         detailimg = findViewById(R.id.detailimg);
         ratingstar = findViewById(R.id.ratingstar);
-        databaseReference = FirebaseDatabase.getInstance().getReference("Ratings");
+        btn_show_comments=findViewById(R.id.btn_show_comments);
+        btn_show_comments.setOnClickListener(view -> {
+            ReviewsBottomSheet reviewBottomSheet = new ReviewsBottomSheet(vendorId);
+            reviewBottomSheet.show(getSupportFragmentManager(), "ReviewsBottomSheet");
+        });
 
+
+        vendorId = getIntent().getStringExtra("vendorId");
+        String imageUrl = getIntent().getStringExtra("imageUrl");
+        String description = getIntent().getStringExtra("description");
+        String price = getIntent().getStringExtra("price");
+
+        // ✅ Confirm data is received (Logging + Toast messages)
+        Log.d("StallDetailActivity", "Received vendorId: " + vendorId);
+        Log.d("StallDetailActivity", "Received Image URL: " + imageUrl);
+        Log.d("StallDetailActivity", "Received Description: " + description);
+        Log.d("StallDetailActivity", "Received Price: " + price);
+
+        Toast.makeText(this, "vendorId: " + vendorId, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Image URL: " + imageUrl, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Description: " + description, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Price: " + price, Toast.LENGTH_LONG).show();// Retrieve vendorId from intent
+
+        if (vendorId == null) {
+            Toast.makeText(this, "Vendor ID is missing!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        databaseReference = FirebaseDatabase.getInstance().getReference("Ratings");
         ratingstar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialogRating();
             }
         });
-
-        String imageUrl = getIntent().getStringExtra("imageUrl");
-        String description = getIntent().getStringExtra("description");
-        String price = getIntent().getStringExtra("price");
-
-
-        Log.d("StallDetailActivity", "Image URL: " + imageUrl);
-        Log.d("StallDetailActivity", "Description: " + description);
-        Log.d("StallDetailActivity", "Price: " + price);
-
 
         if (imageUrl != null) {
             String secureImageUrl = imageUrl.replace("http://", "https://");
@@ -115,37 +135,47 @@ public class StallDetailActivity extends AppCompatActivity {
             return;
         }
 
-        String userId = user.getUid(); // Get logged-in user ID
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+        String userAuthId = user.getUid(); // Firebase Authentication User ID
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userAuthId);
 
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                String customUserId = task.getResult().child("id").getValue(String.class); // Get stored custom ID
+                // Fetch custom user ID and name from Users DB
+                Long customUserId = task.getResult().child("id").getValue(Long.class);
+                String userName = task.getResult().child("name").getValue(String.class);
 
-                if (customUserId == null) {
-                    customUserId = userId;
+                if (customUserId == null || userName == null) {
+                    Toast.makeText(this, "User data missing!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
-                String ratingId = databaseReference.push().getKey();
+                if (vendorId == null) {
+                    Toast.makeText(this, "Vendor ID is missing!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                DatabaseReference ratingRef = FirebaseDatabase.getInstance()
+                        .getReference("Vendors")
+                        .child(vendorId)
+                        .child("Ratings")
+                        .child(String.valueOf(customUserId)); // Store under custom user ID
+
                 Map<String, Object> ratingData = new HashMap<>();
-                ratingData.put("userId", customUserId); // Always store a valid user ID
+                ratingData.put("userId", customUserId);
+                ratingData.put("name", userName);
                 ratingData.put("rating", ratingValue);
                 ratingData.put("comment", comment);
                 ratingData.put("timestamp", System.currentTimeMillis());
 
-                if (ratingId != null) {
-                    databaseReference.child(ratingId).setValue(ratingData)
-                            .addOnSuccessListener(aVoid ->
-                                    Toast.makeText(this, "Rating Submitted!", Toast.LENGTH_SHORT).show()
-                            )
-                            .addOnFailureListener(e ->
-                                    Toast.makeText(this, "Failed to submit rating.", Toast.LENGTH_SHORT).show()
-                            );
-                }
+                ratingRef.setValue(ratingData)
+                        .addOnSuccessListener(aVoid -> Toast.makeText(this, "Rating Submitted!", Toast.LENGTH_SHORT).show())
+                        .addOnFailureListener(e -> Toast.makeText(this, "Failed to submit rating.", Toast.LENGTH_SHORT).show());
+
             } else {
                 Toast.makeText(this, "User data not found.", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }
 

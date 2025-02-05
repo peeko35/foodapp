@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
 import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
@@ -49,6 +51,11 @@ public class MainAdapterrecy extends RecyclerView.Adapter<MyViewHolder>{
 
             // Set click listener to open StallDetailActivity
             holder.itemView.setOnClickListener(view -> {
+                if (currentItem.getVendorId() == null) {
+                    Log.e("Adapter", "Error: vendorId is NULL at position " + position);
+                    Toast.makeText(view.getContext(), "Vendor ID is missing!", Toast.LENGTH_SHORT).show();
+                    return; // Prevents opening activity with null vendorId
+                }
                 Intent intent = new Intent(view.getContext(), StallDetailActivity.class);
                 intent.putExtra("vendorId", currentItem.getVendorId());
                 intent.putExtra("imageUrl", currentItem.getImageUrl());

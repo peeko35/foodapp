@@ -2,14 +2,14 @@ package com.example.myapplication;
 
 public class Rating {
     float rating;
-    String comment;
-
+    String comment,name;
     Rating(){
 
     }
-    public Rating(float rating, String comment) {
+    public Rating(float rating, String comment, String name) {
         this.rating = rating;
         this.comment = comment;
+        this.name = name;
     }
 
     public float getRating() {
@@ -28,5 +28,11 @@ public class Rating {
         this.comment = comment;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

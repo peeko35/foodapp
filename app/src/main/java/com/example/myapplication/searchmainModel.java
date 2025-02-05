@@ -1,7 +1,23 @@
 package com.example.myapplication;
 
 public class searchmainModel {
-    String stallName,foodName,location,imageUrl;
+    String stallName,foodName,imageUrl,location;
+
+    public searchmainModel(String imageUrl,String stallName, String foodName, String location) {
+        this.imageUrl = imageUrl;
+        this.stallName = stallName;
+        this.foodName = foodName;
+        this.location = location;
+
+    }
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 
     public String getStallName() {
         return stallName;
@@ -27,18 +43,6 @@ public class searchmainModel {
         this.location = location;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
-    public searchmainModel(String stallName, String foodName, String location, String imageUrl) {
-        this.stallName = stallName;
-        this.foodName = foodName;
-        this.location = location;
-        this.imageUrl = imageUrl;
-    }
 }

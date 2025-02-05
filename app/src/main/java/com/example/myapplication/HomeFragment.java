@@ -114,14 +114,14 @@ public class HomeFragment extends Fragment {
 
                     // Fetch each food item details
                     for (DataSnapshot foodSnapshot : stallDetailsSnapshot.getChildren()) {
-                        String vendorId=foodSnapshot.child("vendorId").getValue(String.class);
+                        String vendorId=vendorSnapshot.getKey();
                         String foodName = foodSnapshot.child("foodName").getValue(String.class);
                         String imageUrl = foodSnapshot.child("imageUrl").getValue(String.class);
                         String description = foodSnapshot.child("description").getValue(String.class);
                         String price = foodSnapshot.child("price").getValue(String.class);
 
                         // Add data to the list
-                        MainModelrecy model = new MainModelrecy(stallName, foodName, imageUrl, description, price,vendorId);
+                        MainModelrecy model = new MainModelrecy(stallName, foodName, imageUrl, price,description,vendorId);
                         dataList.add(model);
                     }
                 }

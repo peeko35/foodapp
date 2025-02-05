@@ -24,6 +24,8 @@ public class SearchFragment extends Fragment {
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
     List<searchmainModel> dataList;
+    searchAdapter adapter;
+    ValueEventListener eventListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +35,8 @@ public class SearchFragment extends Fragment {
         recyclerView=view.findViewById(R.id.searchfoodstall);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         dataList = new ArrayList<>();
+        adapter = new searchAdapter(getContext(), dataList);
+        recyclerView.setAdapter(adapter);
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
 
         fetchVendorData();
@@ -41,40 +45,52 @@ public class SearchFragment extends Fragment {
     }
 
     private void fetchVendorData() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+       eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataList.clear();
                 for (DataSnapshot vendorSnapshot : dataSnapshot.getChildren()) {
                     // Fetch the stall name
                     String stallName = vendorSnapshot.child("stallName").getValue(String.class);
+                    String location =vendorSnapshot.child("location").getValue(String.class);
 
                     // Fetch the stallDetails for the vendor
                     DataSnapshot stallDetailsSnapshot = vendorSnapshot.child("stallDetails");
 
                     // Fetch each food item details
                     for (DataSnapshot foodSnapshot : stallDetailsSnapshot.getChildren()) {
-                        String location=foodSnapshot.child("location").getValue(String.class);
+
                         String foodName = foodSnapshot.child("foodName").getValue(String.class);
                         String imageUrl = foodSnapshot.child("imageUrl").getValue(String.class);
 
-
                         // Add data to the list
-                        searchmainModel model = new searchmainModel(stallName, foodName, imageUrl,location);
+                        searchmainModel model = new searchmainModel(imageUrl,stallName, foodName, location);
                         dataList.add(model);
                     }
                 }
+                if (dataList.isEmpty()) {
+                    Toast.makeText(getContext(), "No data available", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Data Loaded: " + dataList.size(), Toast.LENGTH_SHORT).show();
+                }
 
-                // Update the adapter with new data
-                searchAdapter Adapter = new searchAdapter(getContext(), dataList); // Fixed context here
-                recyclerView.setAdapter(Adapter);
+                // Notify adapter that data has changed
+                searchAdapter adapter = new searchAdapter(getContext(), dataList);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged(); // 🔥 Ensure UI updates
+
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (databaseReference != null && eventListener != null) {
+            databaseReference.removeEventListener(eventListener);
+        }
     }
 
 }

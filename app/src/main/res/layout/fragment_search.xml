@@ -8,28 +8,29 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:layout_width="137dp"
-        android:layout_height="83dp"
-        android:layout_gravity="center"
-        android:text="@string/search_fragment"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="442dp"
+    <SearchView
+        android:layout_width="401dp"
+        android:layout_height="46dp"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="29dp"
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchfoodstall"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="524dp"
+        android:layout_width="403dp"
+        android:layout_height="612dp"
+
+        android:layout_marginBottom="32dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="5dp"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingClass" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
