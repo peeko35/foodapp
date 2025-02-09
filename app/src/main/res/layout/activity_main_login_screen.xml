@@ -7,30 +7,36 @@
     android:gravity="center"
     tools:context=".MainLoginScreen">
 
-    <Button
-        android:id="@+id/user"
-        android:layout_width="145dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="-100dp"
-        android:background="#B15809"
+
+    <!-- Inner LinearLayout to maintain white background inside border -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
         android:gravity="center"
-        android:text="User"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <Button
-        android:id="@+id/vendor"
-        android:layout_width="147dp"
-        android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/user"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:background="#9DAEEC"
+            android:gravity="center"
+            android:text="User"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
 
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="4dp"
-        android:background="#B15809"
-        android:text="Vendor"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        <Button
+            android:id="@+id/vendor"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:background="#9DAEEC"
+            android:gravity="center"
+            android:text="Vendor"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
-
-
+    </LinearLayout>
 </RelativeLayout>

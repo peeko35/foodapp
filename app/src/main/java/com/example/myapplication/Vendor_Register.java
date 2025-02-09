@@ -37,7 +37,6 @@ public class Vendor_Register extends AppCompatActivity {
 
         }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +94,6 @@ public class Vendor_Register extends AppCompatActivity {
                                 }
                             }
                         });
-
-
             }
         });
 

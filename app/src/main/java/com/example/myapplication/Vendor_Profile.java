@@ -93,7 +93,7 @@ public class Vendor_Profile extends AppCompatActivity {
     }
 
     private boolean isValidAddress(String address) {
-        String regex = "^(Shop No\\. \\d+, )?[A-Za-z0-9\\s]+, [A-Za-z0-9\\s]+$";
+        String regex = "^(Shop No\\. \\d{1,4}, )?[A-Za-z0-9\\s\\-&/]+, [A-Za-z0-9\\s\\-&/]+$";
         return address.matches(regex);
     }
 }

@@ -23,21 +23,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/locpin"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/locationpin" />
 
         <TextView
-            android:id="@+id/textmp"
+            android:id="@+id/textname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
-            android:text="Your Location"
+            android:text="Your Name"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

@@ -38,7 +38,8 @@
             android:exported="false" />
         <activity
             android:name=".StallDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".Profile_details"
             android:exported="false" />
@@ -73,8 +74,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".MainLoginScreen"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".SplashScreen"
             android:exported="true"

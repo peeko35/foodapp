@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +22,8 @@ import com.google.firebase.database.ValueEventListener;
 public class Profile_details extends AppCompatActivity {
     private TextView tvStallName, tvPhoneNumber, tvSelectLocation, tvAddress, tvPincode;
     private DatabaseReference databaseReference;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
+    private String vendorId;
     ImageView imgproback;
 
 
@@ -30,7 +32,17 @@ public class Profile_details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            vendorId = currentUser.getUid(); // Get logged-in vendor's ID
+            databaseReference = FirebaseDatabase.getInstance().getReference("Vendors").child(vendorId);
+            fetchVendorDetails();
+        } else {
+            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+            finish(); // Close activity if user is not logged in
+        }
 
         tvStallName = findViewById(R.id.tvStallName);
         tvPhoneNumber = findViewById(R.id.tvPhoneNumber);
@@ -38,14 +50,8 @@ public class Profile_details extends AppCompatActivity {
         tvAddress = findViewById(R.id.tvAddress);
         tvPincode = findViewById(R.id.tvPincode);
         imgproback=findViewById(R.id.imgproback);
-
-        String vendorId = mAuth.getCurrentUser().getUid();
-        Log.d("ProfileDetails", "Fetching details for vendor: " + vendorId);
-
-        // Fetch the vendor details from Firebase
-        fetchVendorDetails(vendorId);
     }
-    private void fetchVendorDetails(String vendorId) {
+    private void fetchVendorDetails() {
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors").child(vendorId);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -53,31 +59,29 @@ public class Profile_details extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     // Retrieve details
-                    String stallName = snapshot.child("stallName").getValue(String.class);
-                    String phoneNumber = snapshot.child("phoneNumber").getValue(String.class);
-                    String selectLocation = snapshot.child("selectedLocation").getValue(String.class);
+                    // Retrieve values from Firebase
+                    String stallName = snapshot.child("stallDetails").child("stallName").getValue(String.class);
+                    String phone = snapshot.child("phone").getValue(String.class);
+                    String location = snapshot.child("location").getValue(String.class);
                     String address = snapshot.child("address").getValue(String.class);
                     String pincode = snapshot.child("pincode").getValue(String.class);
 
                     // Set values to TextViews
-                    tvStallName.setText("Stall Name: " + stallName);
-                    tvPhoneNumber.setText("Phone Number: " + phoneNumber);
-                    tvSelectLocation.setText("Location: " + selectLocation);
-                    tvAddress.setText("Address: " + address);
-                    tvPincode.setText("Pincode: " + pincode);
+                    tvStallName.setText("Stall Name: " + (stallName != null ? stallName : "N/A"));
+                    tvPhoneNumber.setText("Phone Number: " + (phone != null ? phone : "N/A"));
+                    tvSelectLocation.setText("Location: " + (location != null ? location : "N/A"));
+                    tvAddress.setText("Address: " + (address != null ? address : "N/A"));
+                    tvPincode.setText("Pincode: " + (pincode != null ? pincode : "N/A"));
                 } else {
-                    Toast.makeText(Profile_details.this, "No profile found.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Profile_details.this, "Vendor data not found!", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
-
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-        Toast.makeText(Profile_details.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-});
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Profile_details.this, "Failed to load data!", Toast.LENGTH_SHORT).show();
+            }
+        });
         imgproback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

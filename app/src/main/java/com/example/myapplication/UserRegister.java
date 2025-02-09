@@ -40,7 +40,6 @@ public class UserRegister extends AppCompatActivity {
             Intent intent=new Intent(getApplicationContext(),UserHome.class);
             startActivity(intent);
             finish();
-
         }
     }
 

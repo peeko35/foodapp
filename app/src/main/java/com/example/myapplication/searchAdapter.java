@@ -78,9 +78,9 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements 
                 intent.putExtra("description", currentItem.getDescription());
                 intent.putExtra("price", currentItem.getPrice());
                 Log.d("Adapter", "Passing vendorId: " + currentItem.getVendorId());
-                Log.d("MainAdapterrecy", "Passing Image URL: " + currentItem.getImageUrl());
-                Log.d("MainAdapterrecy", "Passing Description: " + currentItem.getDescription());
-                Log.d("MainAdapterrecy", "Passing Price: " + currentItem.getPrice());
+                Log.d("searchAdapter", "Passing Image URL: " + currentItem.getImageUrl());
+                Log.d("searchAdapter", "Passing Description: " + currentItem.getDescription());
+                Log.d("searchAdapter", "Passing Price: " + currentItem.getPrice());
 
                 view.getContext().startActivity(intent);
             });
@@ -105,7 +105,7 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements 
 
                     String[] keywords = filterPattern.split("\\s+");
 
-                    for (searchmainModel item : dataList) {
+                    for (searchmainModel item : filteredList) {
                         String stallName = item.getStallName().toLowerCase();
                         String foodName = item.getFoodName().toLowerCase();
                         String location = item.getLocation().toLowerCase();
@@ -166,9 +166,6 @@ class MViewHolder extends RecyclerView.ViewHolder{
         ratetext = itemView.findViewById(R.id.ratetext);
         ratingBar = itemView.findViewById(R.id.ratingBar);
         addwishlist=itemView.findViewById(R.id.addwishlist);
-
-
-
 
     }
 }

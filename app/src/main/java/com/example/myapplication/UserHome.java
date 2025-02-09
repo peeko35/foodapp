@@ -60,7 +60,6 @@ public class UserHome extends AppCompatActivity {
             fragmentTransaction.replace(R.id.framelayout,fragment);
 
         }
-
         fragmentTransaction.commit();
     }
 }

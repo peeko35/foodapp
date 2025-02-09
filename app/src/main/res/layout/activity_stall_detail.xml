@@ -13,10 +13,11 @@
         android:layout_width="365dp"
         android:layout_height="249dp"
         android:layout_gravity="center"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:padding="8dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +26,7 @@
         android:layout_width="275dp"
         android:layout_height="38dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:padding="8dp"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -36,40 +37,39 @@
 
     <TextView
         android:id="@+id/descptext"
-        android:layout_width="273dp"
-        android:layout_height="43dp"
+        android:layout_width="272dp"
+        android:layout_height="41dp"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/foodprice" />
 
     <TextView
         android:layout_width="132dp"
         android:layout_height="42dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="20dp"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:text="Give Ratings"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descptext" />
 
-
     <ImageView
         android:id="@+id/ratingstar"
-        android:layout_width="49dp"
-        android:layout_height="33dp"
+        android:layout_width="107dp"
+        android:layout_height="32dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="200dp"
-        android:paddingEnd="16dp"
-        android:src="@drawable/star"
+        android:layout_marginEnd="168dp"
+        android:paddingEnd="10dp"
+        android:src="@drawable/rattings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descptext" />
 
@@ -88,8 +88,8 @@
         android:id="@+id/btn_show_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
-        android:text="Show Comments"
+        android:layout_marginTop="68dp"
+        android:text="Show Reviews"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
