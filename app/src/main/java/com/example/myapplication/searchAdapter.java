@@ -99,30 +99,16 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements 
                 List<searchmainModel> filteredResults = new ArrayList<>();
 
                 if (constraint == null || constraint.length() == 0) {
-                    filteredResults.addAll(filteredList);
+                    filteredResults.addAll(filteredList);  // Use original list for reset
                 } else {
                     String filterPattern = constraint.toString().toLowerCase().trim();
-
-                    String[] keywords = filterPattern.split("\\s+");
-
                     for (searchmainModel item : filteredList) {
-                        String stallName = item.getStallName().toLowerCase();
-                        String foodName = item.getFoodName().toLowerCase();
-                        String location = item.getLocation().toLowerCase();
-
-                        boolean matches = true;
-                        for (String keyword : keywords) {
-                            if (!stallName.contains(keyword) && !foodName.contains(keyword) && !location.contains(keyword)) {
-                                matches = false;
-                                break;
-                            }
-                        }
-
-                        if (matches) {
+                        if (item.getStallName().toLowerCase().contains(filterPattern) ||
+                                item.getFoodName().toLowerCase().contains(filterPattern) ||
+                                item.getLocation().toLowerCase().contains(filterPattern)) {
                             filteredResults.add(item);
                         }
                     }
-
                 }
 
                 FilterResults results = new FilterResults();

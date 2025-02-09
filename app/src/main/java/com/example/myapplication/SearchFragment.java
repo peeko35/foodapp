@@ -36,7 +36,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         recyclerView=view.findViewById(R.id.searchfoodstall);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         dataList = new ArrayList<>();
         adapter = new searchAdapter(getContext(), dataList);
         recyclerView.setAdapter(adapter);
@@ -46,13 +46,18 @@ public class SearchFragment extends Fragment {
         searchvieew.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
+
+                if (adapter != null) {
+                    adapter.getFilter().filter(query);
+                }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if (adapter != null) {
+                    adapter.getFilter().filter(newText);
+                }
                 return true;
             }
         });
@@ -106,6 +111,7 @@ public class SearchFragment extends Fragment {
                         // Add data to the list
                         searchmainModel model = new searchmainModel(imageUrl,stallName, foodName, location,price, description,  vendorId, averageRating);
                         dataList.add(model);
+
                     }
                 }
 
@@ -117,9 +123,10 @@ public class SearchFragment extends Fragment {
 
                 // Notify adapter that data has changed
 
-                adapter.notifyDataSetChanged();
+
                searchAdapter searchadapter=new searchAdapter(requireContext(),dataList);
                 recyclerView.setAdapter(searchadapter);
+                searchadapter.notifyDataSetChanged();
 
             }
 
