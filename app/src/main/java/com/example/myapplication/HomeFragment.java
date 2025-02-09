@@ -111,21 +111,41 @@ public class HomeFragment extends Fragment {
 
                     // Fetch the stallDetails for the vendor
                     DataSnapshot stallDetailsSnapshot = vendorSnapshot.child("stallDetails");
+                    String vendorId = vendorSnapshot.getKey();
+
+                    DataSnapshot ratingsSnapshot = vendorSnapshot.child("Ratings");
+                    float totalRating = 0;
+                    int count = 0;
+                    for (DataSnapshot rating : ratingsSnapshot.getChildren()) {
+                        try {
+                            Object ratingValueObj = rating.child("rating").getValue();
+                            if (ratingValueObj instanceof Number) {
+                                totalRating += ((Number) ratingValueObj).floatValue();
+                                count++;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    float averageRating = (count > 0) ? totalRating / count : 0;
 
                     // Fetch each food item details
                     for (DataSnapshot foodSnapshot : stallDetailsSnapshot.getChildren()) {
-                        String vendorId=vendorSnapshot.getKey();
+                        vendorId=vendorSnapshot.getKey();
                         String foodName = foodSnapshot.child("foodName").getValue(String.class);
                         String imageUrl = foodSnapshot.child("imageUrl").getValue(String.class);
                         String description = foodSnapshot.child("description").getValue(String.class);
                         String price = foodSnapshot.child("price").getValue(String.class);
 
+
+
                         // Add data to the list
-                        MainModelrecy model = new MainModelrecy(stallName, foodName, imageUrl, price,description,vendorId);
+                        MainModelrecy model = new MainModelrecy(stallName, foodName, imageUrl, price,description,vendorId,averageRating);
                         dataList.add(model);
                     }
                 }
-
+                dataList.sort((m1, m2) -> Float.compare(m2.getAverageRating(), m1.getAverageRating()));
                 // Update the adapter with new data
                 MainAdapterrecy mainAdapterrecy = new MainAdapterrecy(requireContext(), dataList); // Fixed context here
                 recyclerView.setAdapter(mainAdapterrecy);

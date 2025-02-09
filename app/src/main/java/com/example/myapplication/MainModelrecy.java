@@ -2,18 +2,20 @@ package com.example.myapplication;
 
 public class MainModelrecy {
     String stallName,foodName,imageUrl,price,description,vendorId;
+    float averageRating;
     MainModelrecy(){
 
     }
 
 
-    public MainModelrecy(String stallName, String foodName, String imageUrl, String price, String description, String vendorId) {
+    public MainModelrecy(String stallName, String foodName, String imageUrl, String price, String description, String vendorId,float averageRating) {
         this.stallName = stallName;
         this.vendorId=vendorId;
         this.foodName = foodName;
         this.imageUrl = imageUrl;
         this.price=price;
         this.description=description;
+        this.averageRating = averageRating;
     }
     public String getVendorId() {
         return vendorId;
@@ -61,4 +63,12 @@ public class MainModelrecy {
     public void setDescription(String description) {
         this.description = description;
     }
+    public float getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double avgRating) {
+        this.averageRating = averageRating;
+    }
+
 }

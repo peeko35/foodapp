@@ -8,19 +8,26 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <SearchView
-        android:layout_width="401dp"
-        android:layout_height="46dp"
-        tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="29dp"
-        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchvieew"
+        android:layout_width="390dp"
+        android:layout_height="45dp"
+        android:background="@drawable/border"
+        android:focusable="false"
+        app:closeIcon="@drawable/clear"
+        app:iconifiedByDefault="false"
+        app:searchHintIcon="@null"
+        app:searchIcon="@drawable/searchicon"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteY="49dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchfoodstall"
-        android:layout_width="403dp"
-        android:layout_height="612dp"
-
-        android:layout_marginBottom="32dp"
+        android:layout_width="410dp"
+        android:layout_height="630dp"
+        android:layout_marginBottom="1dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="5dp"
@@ -28,7 +35,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingClass" />
 

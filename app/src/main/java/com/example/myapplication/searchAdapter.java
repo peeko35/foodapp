@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,16 +16,21 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class searchAdapter extends RecyclerView.Adapter<MViewHolder>{
 
        private Context context;
        private List<searchmainModel>dataList;
+    private List<searchmainModel> filteredList;
+
 
     public searchAdapter(Context context, List<searchmainModel> dataList) {
         this.context = context;
         this.dataList = dataList;
+        this.filteredList = new ArrayList<>(dataList);
     }
 
     @NonNull
@@ -38,6 +44,7 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull MViewHolder holder, int position) {
         searchmainModel currentItem = dataList.get(position);
+
 
         if (currentItem != null) {
             String imageUrl = currentItem.getImageUrl();
@@ -60,8 +67,46 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder>{
     @Override
     public int getItemCount() {
         return dataList.size();
+
+    }
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<searchmainModel> filteredResults = new ArrayList<>();
+
+                if (constraint == null || constraint.length() == 0) {
+                    filteredResults.addAll(dataList);
+                } else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+
+                    for (searchmainModel item : dataList) {
+                        if (item.getStallName().toLowerCase().contains(filterPattern) ||
+                                item.getFoodName().toLowerCase().contains(filterPattern) ||
+                                item.getLocation().toLowerCase().contains(filterPattern)) {
+                            filteredResults.add(item);
+                        }
+                    }
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredResults;
+                results.count = filteredResults.size();
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredList.clear();
+                filteredList.addAll((List<searchmainModel>) results.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 }
+
+
+
 class MViewHolder extends RecyclerView.ViewHolder{
     ImageView reccimage;
     TextView stalnm,foodnm,loct;
@@ -80,3 +125,4 @@ class MViewHolder extends RecyclerView.ViewHolder{
 
     }
 }
+

@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,8 @@ public class SearchFragment extends Fragment {
     List<searchmainModel> dataList;
     searchAdapter adapter;
     ValueEventListener eventListener;
+    SearchView searchvieew;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +40,22 @@ public class SearchFragment extends Fragment {
         dataList = new ArrayList<>();
         adapter = new searchAdapter(getContext(), dataList);
         recyclerView.setAdapter(adapter);
+        searchvieew=view.findViewById(R.id.searchvieew);
+        searchvieew.clearFocus();
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
+        searchvieew.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
 
         fetchVendorData();
         return view;
@@ -75,9 +93,9 @@ public class SearchFragment extends Fragment {
                 }
 
                 // Notify adapter that data has changed
-                searchAdapter adapter = new searchAdapter(getContext(), dataList);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged(); // 🔥 Ensure UI updates
+
+                adapter.notifyDataSetChanged();
+
 
             }
             @Override
@@ -85,12 +103,16 @@ public class SearchFragment extends Fragment {
                 Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
+
+
     public void onDestroyView() {
         super.onDestroyView();
         if (databaseReference != null && eventListener != null) {
             databaseReference.removeEventListener(eventListener);
         }
     }
+
 
 }

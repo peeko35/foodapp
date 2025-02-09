@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,8 @@ public class MainAdapterrecy extends RecyclerView.Adapter<MyViewHolder>{
             holder.recstall.setText(currentItem.getStallName());
             holder.recfood.setText(currentItem.getFoodName());
 
+            holder.ratetext.setText(String.format("%.1f",currentItem.getAverageRating()));
+            Log.d("Adapter", "Rating: " + currentItem.getAverageRating());
             // Set click listener to open StallDetailActivity
             holder.itemView.setOnClickListener(view -> {
                 if (currentItem.getVendorId() == null) {
@@ -80,9 +83,10 @@ public class MainAdapterrecy extends RecyclerView.Adapter<MyViewHolder>{
     }
 }
 class MyViewHolder extends RecyclerView.ViewHolder{
-    ImageView recImage;
-    TextView recstall,recfood;
+    ImageView recImage,addwishlist;
+    TextView recstall,recfood,ratetext;
     CardView recCard;
+    RatingBar ratingBar;
 
 
 
@@ -92,6 +96,10 @@ class MyViewHolder extends RecyclerView.ViewHolder{
         recstall =itemView.findViewById(R.id.stallnm);
         recfood =itemView.findViewById(R.id.foodnm);
         recCard = itemView.findViewById(R.id.cardrec);
+        ratetext = itemView.findViewById(R.id.ratetext);
+        ratingBar = itemView.findViewById(R.id.ratingBar);
+        addwishlist=itemView.findViewById(R.id.addwishlist);
+
 
 
 

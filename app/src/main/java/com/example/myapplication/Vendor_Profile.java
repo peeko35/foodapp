@@ -67,6 +67,10 @@ public class Vendor_Profile extends AppCompatActivity {
             Toast.makeText(this, "All fields are required!", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (!isValidAddress(address)) {
+            Toast.makeText(this, "Invalid address format! Use 'Shop No, Street Name, Landmark' or 'Street Name, Landmark'", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         Map<String, Object> vendorData = new HashMap<>();
         vendorData.put("phone", phone);
@@ -86,6 +90,11 @@ public class Vendor_Profile extends AppCompatActivity {
                 Toast.makeText(this, "Failed to save vendor data!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private boolean isValidAddress(String address) {
+        String regex = "^(Shop No\\. \\d+, )?[A-Za-z0-9\\s]+, [A-Za-z0-9\\s]+$";
+        return address.matches(regex);
     }
 }
 
