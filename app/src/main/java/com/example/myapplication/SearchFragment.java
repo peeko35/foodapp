@@ -74,18 +74,41 @@ public class SearchFragment extends Fragment {
 
                     // Fetch the stallDetails for the vendor
                     DataSnapshot stallDetailsSnapshot = vendorSnapshot.child("stallDetails");
+                    String vendorId = vendorSnapshot.getKey();
+
+                    DataSnapshot ratingsSnapshot = vendorSnapshot.child("Ratings");
+                    float totalRating = 0;
+                    int count = 0;
+                    for (DataSnapshot rating : ratingsSnapshot.getChildren()) {
+                        try {
+                            Object ratingValueObj = rating.child("rating").getValue();
+                            if (ratingValueObj instanceof Number) {
+                                totalRating += ((Number) ratingValueObj).floatValue();
+                                count++;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    float averageRating = (count > 0) ? totalRating / count : 0;
+
 
                     // Fetch each food item details
                     for (DataSnapshot foodSnapshot : stallDetailsSnapshot.getChildren()) {
+                        vendorId=vendorSnapshot.getKey();
 
                         String foodName = foodSnapshot.child("foodName").getValue(String.class);
                         String imageUrl = foodSnapshot.child("imageUrl").getValue(String.class);
+                        String description = foodSnapshot.child("description").getValue(String.class);
+                        String price = foodSnapshot.child("price").getValue(String.class);
 
                         // Add data to the list
-                        searchmainModel model = new searchmainModel(imageUrl,stallName, foodName, location);
+                        searchmainModel model = new searchmainModel(imageUrl,stallName, foodName, location,price, description,  vendorId, averageRating);
                         dataList.add(model);
                     }
                 }
+
                 if (dataList.isEmpty()) {
                     Toast.makeText(getContext(), "No data available", Toast.LENGTH_SHORT).show();
                 } else {
@@ -95,9 +118,11 @@ public class SearchFragment extends Fragment {
                 // Notify adapter that data has changed
 
                 adapter.notifyDataSetChanged();
-
+               searchAdapter searchadapter=new searchAdapter(requireContext(),dataList);
+                recyclerView.setAdapter(searchadapter);
 
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show();

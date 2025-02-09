@@ -3,13 +3,17 @@ package com.example.myapplication;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,7 +24,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class searchAdapter extends RecyclerView.Adapter<MViewHolder>{
+public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements Filterable {
 
        private Context context;
        private List<searchmainModel>dataList;
@@ -62,11 +66,30 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder>{
             holder.loct.setText(currentItem.getLocation() != null ? currentItem.getLocation() : "Unknown Location");
             Log.d("Location", "Location for position " + position + ": " + currentItem.getLocation());
 
+            holder.itemView.setOnClickListener(view -> {
+                if (currentItem.getVendorId() == null) {
+                    Log.e("Adapter", "Error: vendorId is NULL at position " + position);
+                    Toast.makeText(view.getContext(), "Vendor ID is missing!", Toast.LENGTH_SHORT).show();
+                    return; // Prevents opening activity with null vendorId
+                }
+                Intent intent = new Intent(view.getContext(), StallDetailActivity.class);
+                intent.putExtra("vendorId", currentItem.getVendorId());
+                intent.putExtra("imageUrl", currentItem.getImageUrl());
+                intent.putExtra("description", currentItem.getDescription());
+                intent.putExtra("price", currentItem.getPrice());
+                Log.d("Adapter", "Passing vendorId: " + currentItem.getVendorId());
+                Log.d("MainAdapterrecy", "Passing Image URL: " + currentItem.getImageUrl());
+                Log.d("MainAdapterrecy", "Passing Description: " + currentItem.getDescription());
+                Log.d("MainAdapterrecy", "Passing Price: " + currentItem.getPrice());
+
+                view.getContext().startActivity(intent);
+            });
+
         }
     }
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return dataList == null ? 0 : dataList.size();
 
     }
     public Filter getFilter() {
@@ -76,17 +99,30 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder>{
                 List<searchmainModel> filteredResults = new ArrayList<>();
 
                 if (constraint == null || constraint.length() == 0) {
-                    filteredResults.addAll(dataList);
+                    filteredResults.addAll(filteredList);
                 } else {
                     String filterPattern = constraint.toString().toLowerCase().trim();
 
+                    String[] keywords = filterPattern.split("\\s+");
+
                     for (searchmainModel item : dataList) {
-                        if (item.getStallName().toLowerCase().contains(filterPattern) ||
-                                item.getFoodName().toLowerCase().contains(filterPattern) ||
-                                item.getLocation().toLowerCase().contains(filterPattern)) {
+                        String stallName = item.getStallName().toLowerCase();
+                        String foodName = item.getFoodName().toLowerCase();
+                        String location = item.getLocation().toLowerCase();
+
+                        boolean matches = true;
+                        for (String keyword : keywords) {
+                            if (!stallName.contains(keyword) && !foodName.contains(keyword) && !location.contains(keyword)) {
+                                matches = false;
+                                break;
+                            }
+                        }
+
+                        if (matches) {
                             filteredResults.add(item);
                         }
                     }
+
                 }
 
                 FilterResults results = new FilterResults();
@@ -97,8 +133,8 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder>{
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredList.clear();
-                filteredList.addAll((List<searchmainModel>) results.values);
+                dataList.clear();
+                dataList.addAll((List<searchmainModel>) results.values);
                 notifyDataSetChanged();
             }
         };
@@ -111,6 +147,10 @@ class MViewHolder extends RecyclerView.ViewHolder{
     ImageView reccimage;
     TextView stalnm,foodnm,loct;
     CardView cardView;
+    ImageView recImage,addwishlist;
+    TextView recstall,recfood,ratetext;
+    CardView recCard;
+    RatingBar ratingBar;
 
     public MViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -119,6 +159,13 @@ class MViewHolder extends RecyclerView.ViewHolder{
         foodnm=itemView.findViewById(R.id.foodnam);
         loct=itemView.findViewById(R.id.stallLoc);
         cardView=itemView.findViewById(R.id.cardview);
+        recImage =itemView.findViewById(R.id.recImage);
+        recstall =itemView.findViewById(R.id.stallnm);
+        recfood =itemView.findViewById(R.id.foodnm);
+        recCard = itemView.findViewById(R.id.cardrec);
+        ratetext = itemView.findViewById(R.id.ratetext);
+        ratingBar = itemView.findViewById(R.id.ratingBar);
+        addwishlist=itemView.findViewById(R.id.addwishlist);
 
 
 

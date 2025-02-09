@@ -11,8 +11,8 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchvieew"
-        android:layout_width="390dp"
-        android:layout_height="45dp"
+        android:layout_width="403dp"
+        android:layout_height="49dp"
         android:background="@drawable/border"
         android:focusable="false"
         app:closeIcon="@drawable/clear"

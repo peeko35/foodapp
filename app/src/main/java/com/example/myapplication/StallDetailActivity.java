@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +28,7 @@ import java.util.Map;
 public class StallDetailActivity extends AppCompatActivity {
 
     TextView desctext, foodprice;
-    ImageView detailimg, ratingstar;
+    ImageView detailimg, ratingstar,mapnav;
     DatabaseReference databaseReference;
     Button btn_show_comments;
     String vendorId;
@@ -41,6 +43,14 @@ public class StallDetailActivity extends AppCompatActivity {
         foodprice = findViewById(R.id.foodprice);
         detailimg = findViewById(R.id.detailimg);
         ratingstar = findViewById(R.id.ratingstar);
+        mapnav=findViewById(R.id.mapnav);
+        mapnav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StallDetailActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
         btn_show_comments=findViewById(R.id.btn_show_comments);
         btn_show_comments.setOnClickListener(view -> {
             ReviewsBottomSheet reviewBottomSheet = new ReviewsBottomSheet(vendorId);
