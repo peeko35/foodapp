@@ -47,17 +47,17 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                if (adapter != null) {
+
                     adapter.getFilter().filter(query);
-                }
-                return true;
+
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (adapter != null) {
+
                     adapter.getFilter().filter(newText);
-                }
+
                 return true;
             }
         });
@@ -72,6 +72,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataList.clear();
+
                 for (DataSnapshot vendorSnapshot : dataSnapshot.getChildren()) {
                     // Fetch the stall name
                     String stallName = vendorSnapshot.child("stallName").getValue(String.class);
@@ -115,19 +116,17 @@ public class SearchFragment extends Fragment {
                     }
                 }
 
-                if (dataList.isEmpty()) {
-                    Toast.makeText(getContext(), "No data available", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Data Loaded: " + dataList.size(), Toast.LENGTH_SHORT).show();
-                }
+
 
                 // Notify adapter that data has changed
 
 
-               searchAdapter searchadapter=new searchAdapter(requireContext(),dataList);
-                recyclerView.setAdapter(searchadapter);
-                searchadapter.notifyDataSetChanged();
 
+                if (dataList.isEmpty()) {
+                    Toast.makeText(getContext(), "No data available", Toast.LENGTH_SHORT).show();
+                }
+
+                adapter.notifyDataSetChanged();
             }
 
             @Override

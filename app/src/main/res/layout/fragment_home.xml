@@ -15,7 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,16 +22,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/locpin"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Location Pin"
+            android:src="@drawable/locationpin" />
 
         <TextView
-            android:id="@+id/textname"
+            android:id="@+id/textmp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="center_vertical"
-            android:text="Your Name"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:text="Your Location"
+            android:textSize="16sp"
+            android:textColor="#000000" />
 
     </LinearLayout>
 
@@ -41,25 +45,53 @@
         android:layout_width="366dp"
         android:layout_height="215dp"
         android:layout_marginTop="28dp"
+        android:padding="8dp"
+        android:background="@drawable/viewflipper_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.355"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/locationContainer" />
 
+
+    <TextView
+        android:layout_width="152dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="316dp"
+        android:text="Popular Food"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerFilter"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="316dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodstallsrecylerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="405dp"
+        android:layout_height="352dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/v_flipper"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingClass" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

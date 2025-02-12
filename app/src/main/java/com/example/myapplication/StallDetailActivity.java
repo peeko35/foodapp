@@ -47,7 +47,10 @@ public class StallDetailActivity extends AppCompatActivity {
         mapnav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(StallDetailActivity.this, MapsActivity.class);
+                Intent intent = new Intent(StallDetailActivity.this, Maps2Page.class);
+
+                vendorId = getIntent().getStringExtra("vendorId");
+                intent.putExtra("vendorId",vendorId);
                 startActivity(intent);
             }
         });

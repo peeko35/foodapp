@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,13 +44,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import android.widget.Spinner;
 
 public class HomeFragment extends Fragment {
     ViewFlipper v_flipper;
     RecyclerView recyclerView;
     List<MainModelrecy>dataList;
     DatabaseReference databaseReference;
-    TextView textname;
+    TextView textmp;
+    ImageView locpin;
+    private String[] foregroundLocationPermission={Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    private PermissionManager permissionManager;
+    private LocationManager locationManager;
+    private FusedLocationProviderClient fusedLocationClient;
+
 
     int[] imageos={
             R.drawable.panipuri,
@@ -68,9 +77,61 @@ public class HomeFragment extends Fragment {
         dataList = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
         fetchVendorData();
-        textname=view.findViewById(R.id.textname);
-        fetchUserName();
+
+        locpin=view.findViewById(R.id.locpin);
+        textmp=view.findViewById(R.id.textmp);
+        permissionManager=PermissionManager.getInstance(requireContext());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+
         v_flipper=view.findViewById(R.id.v_flipper);
+        Spinner spinnerFilter = view.findViewById(R.id.spinnerFilter);
+
+        // Create options for the Spinner
+        String[] filterOptions = {"Filter By","Top Rated", "Nearby"};
+
+        // Create an adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, filterOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set adapter to Spinner
+        spinnerFilter.setAdapter(adapter);
+
+        // Set item selection listener
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+
+                if (selectedItem.equals("Top Rated")) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        dataList.sort((m1, m2) -> Float.compare(m2.getAverageRating(), m1.getAverageRating()));
+                    }
+                    recyclerView.setAdapter(new MainAdapterrecy(getContext(), dataList));
+                } else if (selectedItem.equals("Nearby")) {
+                    filterNearbyVendors();
+
+                }else if(selectedItem.equals(("Filter By"))){
+                    Toast.makeText(requireContext(), "Please select option", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        locpin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!permissionManager.checkPermissions(foregroundLocationPermission)){
+                    permissionManager.askPermissions(HomeFragment.this,foregroundLocationPermission,100);
+
+                }else{
+                    getAddress();
+                }
+            }
+        });
 
         for(int i=0;i<imageos.length;i++){
             flip_image(imageos[i]);
@@ -80,30 +141,29 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void fetchUserName() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String userId = user.getUid(); // Get current user ID
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        String name = snapshot.child("name").getValue(String.class);
-                        if (name != null) {
-                            textname.setText("Welcome "+name); // Set user name in TextView
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(requireContext(), "Failed to fetch user name", Toast.LENGTH_SHORT).show();
-                }
-            });
+    private void filterNearbyVendors() {
+        if (textmp.getText().toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Location not found. Please enable location services.", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        String userLocation = textmp.getText().toString().toLowerCase(); // Convert to lowercase for comparison
+        List<MainModelrecy> nearbyList = new ArrayList<>();
+
+        for (MainModelrecy model : dataList) {
+            if (model.getAddress() != null && model.getAddress().toLowerCase().contains(userLocation)) {
+                nearbyList.add(model);
+            }
+        }
+
+        if (nearbyList.isEmpty()) {
+            Toast.makeText(requireContext(), "No nearby vendors found", Toast.LENGTH_SHORT).show();
+        }
+
+        recyclerView.setAdapter(new MainAdapterrecy(getContext(), nearbyList));
     }
+
+
 
     private void fetchVendorData() {
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -113,6 +173,8 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot vendorSnapshot : dataSnapshot.getChildren()) {
                     // Fetch the stall name
                     String stallName = vendorSnapshot.child("stallName").getValue(String.class);
+                    String address=vendorSnapshot.child("address").getValue(String.class);
+                    String location=vendorSnapshot.child("location").getValue(String.class);
 
                     // Fetch the stallDetails for the vendor
                     DataSnapshot stallDetailsSnapshot = vendorSnapshot.child("stallDetails");
@@ -143,15 +205,13 @@ public class HomeFragment extends Fragment {
                         String description = foodSnapshot.child("description").getValue(String.class);
                         String price = foodSnapshot.child("price").getValue(String.class);
                         // Add data to the list
-                        MainModelrecy model = new MainModelrecy(stallName, foodName, imageUrl, price,description,vendorId,averageRating);
+                        MainModelrecy model = new MainModelrecy(stallName, foodName, imageUrl, price,description,vendorId,averageRating,address,location);
                         dataList.add(model);
                     }
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    dataList.sort((m1, m2) -> Float.compare(m2.getAverageRating(), m1.getAverageRating()));
-                }
+
                 // Update the adapter with new data
-                MainAdapterrecy mainAdapterrecy = new MainAdapterrecy(requireContext(), dataList); // Fixed context here
+                MainAdapterrecy mainAdapterrecy = new MainAdapterrecy(getContext(), dataList); // Fixed context here
                 recyclerView.setAdapter(mainAdapterrecy);
             }
 
@@ -161,6 +221,50 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    private void getAddress(){
+        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(requireContext(), "Location permissions are required.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    Address address = addresses.get(0);
+
+                    String strAddress = "" + address.getAddressLine(0)  + "Locality:" + address.getLocality();
+                    textmp.setText(strAddress);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Toast.makeText(requireContext(), "Please try again", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+
+        if (requestCode == 100) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+                getAddress();
+            } else {
+                // Permission denied
+                Toast.makeText(requireContext(), "Location permission is required to use this feature.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
 
     private void flip_image(int i) {
         ImageView view =new ImageView(requireContext());

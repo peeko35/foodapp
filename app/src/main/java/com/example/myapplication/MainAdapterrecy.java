@@ -48,6 +48,7 @@ public class MainAdapterrecy extends RecyclerView.Adapter<MyViewHolder>{
 
             // Set stall name and food name
             holder.recstall.setText(currentItem.getStallName());
+            holder.location.setText(currentItem.getLocation());
             holder.recfood.setText(currentItem.getFoodName());
 
             holder.ratetext.setText(String.format("%.1f",currentItem.getAverageRating()));
@@ -84,7 +85,7 @@ public class MainAdapterrecy extends RecyclerView.Adapter<MyViewHolder>{
 }
 class MyViewHolder extends RecyclerView.ViewHolder{
     ImageView recImage,addwishlist;
-    TextView recstall,recfood,ratetext;
+    TextView recstall,recfood,ratetext,location;
     CardView recCard;
     RatingBar ratingBar;
 
@@ -98,7 +99,7 @@ class MyViewHolder extends RecyclerView.ViewHolder{
         recCard = itemView.findViewById(R.id.cardrec);
         ratetext = itemView.findViewById(R.id.ratetext);
         ratingBar = itemView.findViewById(R.id.ratingBar);
-        addwishlist=itemView.findViewById(R.id.addwishlist);
+        location=itemView.findViewById(R.id.location);
 
 
 

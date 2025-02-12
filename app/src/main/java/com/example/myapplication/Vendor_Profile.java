@@ -43,7 +43,7 @@ public class Vendor_Profile extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
 
-        String[] locations = {"select location", "GhatKopar", "Dadar", "Matunga", "Thane"};
+        String[] locations = {"select location", "GhatKopar", "Dadar", "Matunga", "Thane","Ambivali"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(adapter);
@@ -93,7 +93,11 @@ public class Vendor_Profile extends AppCompatActivity {
     }
 
     private boolean isValidAddress(String address) {
-        String regex = "^(?i)(Shop No\\. \\d{1,4}, )?[A-Za-z0-9\\s\\-&/]+, ?[A-Za-z0-9\\s\\-&/]+$";
+        String regex = "^(?:Shop\\s*No\\.\\s*\\d+,[ ]*)?" +
+                "(?:[A-Za-z0-9 &.,'-]+ Market,[ ]*)?" +
+                "(?:[A-Za-z0-9 &.,'-]+ (?:Area|Road),[ ]*)?" +
+                "(?:[A-Za-z0-9 &.,'-]+, )*" +
+                "[A-Za-z0-9 &.,'-]+$";
         return address.matches(regex);
     }
 }

@@ -28,7 +28,7 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements 
 
        private Context context;
        private List<searchmainModel>dataList;
-    private List<searchmainModel> filteredList;
+       private List<searchmainModel> filteredList;
 
 
     public searchAdapter(Context context, List<searchmainModel> dataList) {
@@ -89,7 +89,8 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements 
     }
     @Override
     public int getItemCount() {
-        return dataList == null ? 0 : dataList.size();
+        return dataList.size();
+
 
     }
     public Filter getFilter() {
@@ -99,13 +100,26 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements 
                 List<searchmainModel> filteredResults = new ArrayList<>();
 
                 if (constraint == null || constraint.length() == 0) {
-                    filteredResults.addAll(filteredList);  // Use original list for reset
+                    filteredResults.addAll(dataList);  // Use the original list for reset
                 } else {
                     String filterPattern = constraint.toString().toLowerCase().trim();
-                    for (searchmainModel item : filteredList) {
-                        if (item.getStallName().toLowerCase().contains(filterPattern) ||
-                                item.getFoodName().toLowerCase().contains(filterPattern) ||
-                                item.getLocation().toLowerCase().contains(filterPattern)) {
+                    for (searchmainModel item : dataList) {
+                        // Avoid NullPointerException
+                        String stallName = item.getStallName() != null ? item.getStallName().toLowerCase() : "";
+                        String foodName = item.getFoodName() != null ? item.getFoodName().toLowerCase() : "";
+                        String location = item.getLocation() != null ? item.getLocation().toLowerCase() : "";
+
+                        String[] queryWords = filterPattern.split("\\s+");
+
+                        boolean matchFound = false;
+                        for (String word : queryWords) {
+                            if (stallName.contains(word) || foodName.contains(word) || location.contains(word)) {
+                                matchFound = true;
+                                break;  // No need to check further if a match is found
+                            }
+                        }
+
+                        if (matchFound) {
                             filteredResults.add(item);
                         }
                     }
@@ -114,14 +128,19 @@ public class searchAdapter extends RecyclerView.Adapter<MViewHolder> implements 
                 FilterResults results = new FilterResults();
                 results.values = filteredResults;
                 results.count = filteredResults.size();
+
+                Log.d("SearchDebug", "Matching results: " + results.count);
                 return results;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dataList.clear();
-                dataList.addAll((List<searchmainModel>) results.values);
-                notifyDataSetChanged();
+                if (results.values != null) {
+                    dataList.clear();
+                    dataList.addAll((List<searchmainModel>) results.values);
+                }
+                Log.d("SearchDebug", "Filtered Results: " + dataList.size());
+                notifyDataSetChanged(); // Ensure UI updates
             }
         };
     }
@@ -151,7 +170,7 @@ class MViewHolder extends RecyclerView.ViewHolder{
         recCard = itemView.findViewById(R.id.cardrec);
         ratetext = itemView.findViewById(R.id.ratetext);
         ratingBar = itemView.findViewById(R.id.ratingBar);
-        addwishlist=itemView.findViewById(R.id.addwishlist);
+
 
     }
 }
