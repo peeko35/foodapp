@@ -147,11 +147,14 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-        String userLocation = textmp.getText().toString().toLowerCase(); // Convert to lowercase for comparison
-        List<MainModelrecy> nearbyList = new ArrayList<>();
+        String userLocation = extractLocality(textmp.getText().toString().toLowerCase()); // Extract user's locality
 
+        List<MainModelrecy> nearbyList = new ArrayList<>();
         for (MainModelrecy model : dataList) {
-            if (model.getAddress() != null && model.getAddress().toLowerCase().contains(userLocation)) {
+            String vendorLocation = extractLocality(model.getLocation().toLowerCase()); // Extract vendor's locality
+
+            // Match based on exact locality names
+            if (vendorLocation != null && userLocation != null && vendorLocation.equalsIgnoreCase(userLocation)) {
                 nearbyList.add(model);
             }
         }
@@ -162,8 +165,16 @@ public class HomeFragment extends Fragment {
 
         recyclerView.setAdapter(new MainAdapterrecy(getContext(), nearbyList));
     }
+    private String extractLocality(String location) {
+        if (location == null || location.isEmpty()) return null;
 
-
+        // Split the address if it contains commas and pick the most relevant part
+        String[] parts = location.split(",");
+        if (parts.length > 1) {
+            return parts[0].trim(); // Taking the first part (most relevant for localities)
+        }
+        return location.trim();
+    }
 
     private void fetchVendorData() {
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -230,25 +241,27 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
                 try {
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    Address address = addresses.get(0);
+                    if (!addresses.isEmpty()) {
+                        Address address = addresses.get(0);
+                        String locality = address.getLocality(); // Extracting only the locality
 
-                    String strAddress = "" + address.getAddressLine(0)  + "Locality:" + address.getLocality();
-                    textmp.setText(strAddress);
+                        if (locality != null) {
+                            textmp.setText(locality); // Set only the locality, not full address
+                        } else {
+                            textmp.setText("Unknown Location");
+                        }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             } else {
                 Toast.makeText(requireContext(), "Please try again", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
     public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode,permissions,grantResults);
