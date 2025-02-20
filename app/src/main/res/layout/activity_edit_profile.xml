@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/profilebkg"
-    tools:context=".UserProfileFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
+    android:background="@drawable/back"
+    tools:context=".edit_profile">
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="346dp"
@@ -23,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.643">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +45,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/profileName"
+                android:id="@+id/profame"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -81,7 +77,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/profileEmail"
+                android:id="@+id/profEmail"
                 android:layout_width="159dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -104,8 +100,8 @@
             android:padding="8dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Password"
                 android:textColor="@color/lavender"
@@ -113,12 +109,13 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/profilePassword"
-                android:layout_width="159dp"
-                android:layout_height="38dp"
+                android:id="@+id/profPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:inputType="textPassword"
                 android:text="password"
+                android:inputType="textPassword"
+                android:autofillHints="password"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
@@ -132,23 +129,14 @@
 
 
         <Button
-            android:id="@+id/logout"
+            android:id="@+id/savve"
             android:layout_width="117dp"
             android:layout_height="55dp"
             android:layout_marginTop="25dp"
             android:background="@color/lavender"
-            android:text="@string/Userlogout"
+            android:text="Save"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/editProfile"
-            android:layout_width="110dp"
-            android:layout_height="52dp"
-            android:layout_marginLeft="200dp"
-            android:layout_marginTop="-50dp"
-            android:background="@color/lavender"
-            android:text="@string/edit_profile"
-            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

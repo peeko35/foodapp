@@ -4,13 +4,7 @@ public class MainModelrecy {
     String stallName,foodName,imageUrl,price,description,vendorId,address,location;
     float averageRating;
     MainModelrecy(){
-
     }
-
-
-
-
-
     public MainModelrecy(String stallName, String foodName, String imageUrl, String price, String description, String vendorId, float averageRating, String address, String location) {
         this.stallName = stallName;
         this.vendorId=vendorId;

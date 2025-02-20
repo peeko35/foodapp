@@ -62,8 +62,8 @@
 
         <EditText
             android:id="@+id/descption"
-            android:layout_width="334dp"
-            android:layout_height="61dp"
+            android:layout_width="348dp"
+            android:layout_height="62dp"
             android:layout_marginStart="24dp"
 
             android:layout_marginTop="156dp"

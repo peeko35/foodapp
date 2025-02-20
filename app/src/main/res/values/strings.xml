@@ -52,6 +52,8 @@
     <string name="favourite">Favourite</string>
     <string name="search_fragment">Search Fragment</string>
     <string name="name">Name</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="Userlogout">Logout</string>
 
 
 </resources>

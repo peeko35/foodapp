@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -84,6 +83,7 @@
         android:layout_height="352dp"
         android:clipToPadding="false"
         android:orientation="vertical"
+
         android:padding="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

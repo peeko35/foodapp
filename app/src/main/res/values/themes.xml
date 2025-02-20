@@ -9,6 +9,6 @@
 
     <style name="RatingBar" parent="Theme.MyApplication">
         <item name="colorControlActivated">@color/colorRatingActive</item>
-        <item name="colorControlNormal">@color/colorRatingInActive</item>
+        <item name="colorControlNormal">#EBAA10</item>
     </style>
 </resources>

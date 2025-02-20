@@ -97,6 +97,7 @@ public class UserRegister extends AppCompatActivity {
                                         // Create a map to store user details
                                         Map<String, Object> userDetails = new HashMap<>();
                                         userDetails.put("name", nam);
+                                        userDetails.put("password",password);
                                         userDetails.put("email", email);
                                         userDetails.put("id", System.currentTimeMillis()); // Use timestamp as unique ID
 

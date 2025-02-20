@@ -9,10 +9,7 @@
         android:id="@+id/navExplore"
         android:icon="@drawable/search"
         android:title="Search" />
-    <item
-        android:id="@+id/navafav"
-        android:icon="@drawable/fav"
-        android:title="Wishlist" />
+
     <item
         android:id="@+id/navprofile"
         android:icon="@drawable/person"

@@ -31,7 +31,6 @@ public class VendorLogin extends AppCompatActivity {
     TextView textup;
     ProgressBar bbar;
     FirebaseAuth mAuth;
-
     @Override
     public void onStart() {
         super.onStart();
@@ -41,11 +40,8 @@ public class VendorLogin extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(),VendorHome.class);
             startActivity(intent);
             finish();
-
         }
     }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

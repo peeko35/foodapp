@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import android.widget.Spinner;
@@ -57,8 +59,6 @@ public class HomeFragment extends Fragment {
     private PermissionManager permissionManager;
     private LocationManager locationManager;
     private FusedLocationProviderClient fusedLocationClient;
-
-
     int[] imageos={
             R.drawable.panipuri,
             R.drawable.vadapav,
@@ -77,7 +77,6 @@ public class HomeFragment extends Fragment {
         dataList = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
         fetchVendorData();
-
         locpin=view.findViewById(R.id.locpin);
         textmp=view.findViewById(R.id.textmp);
         permissionManager=PermissionManager.getInstance(requireContext());
@@ -142,38 +141,58 @@ public class HomeFragment extends Fragment {
     }
 
     private void filterNearbyVendors() {
-        if (textmp.getText().toString().isEmpty()) {
+        // Extract simplified locality from the user's location input
+        String userLocation = extractLocality(textmp.getText().toString());
+
+        if (userLocation == null || userLocation.isEmpty()) {
             Toast.makeText(requireContext(), "Location not found. Please enable location services.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String userLocation = extractLocality(textmp.getText().toString().toLowerCase()); // Extract user's locality
-
+        // Predefined vendor locations (you can later make this dynamic from Firebase)
+        List<String> vendorLocations = Arrays.asList("matunga", "ghatkopar", "dadar", "thane", "ambivli");
         List<MainModelrecy> nearbyList = new ArrayList<>();
-        for (MainModelrecy model : dataList) {
-            String vendorLocation = extractLocality(model.getLocation().toLowerCase()); // Extract vendor's locality
 
-            // Match based on exact locality names
-            if (vendorLocation != null && userLocation != null && vendorLocation.equalsIgnoreCase(userLocation)) {
+        for (MainModelrecy model : dataList) {
+            String vendorLocation = model.getLocation();
+            if (vendorLocation != null) {
+                vendorLocation = vendorLocation.toLowerCase().trim();
+                Log.d("FILTER_DEBUG", "Vendor Location: " + vendorLocation);
+            } else {
+                Log.d("FILTER_DEBUG", "Vendor Location is null for stall: " + model.getStallName());
+                continue; // Skip if vendor location is null
+            }
+
+            // Check if vendor's location matches the extracted user locality
+            if (vendorLocation.contains(userLocation)) {
+                Log.d("FILTER_DEBUG", "Match found: " + model.getStallName() + " -> " + vendorLocation);
                 nearbyList.add(model);
             }
         }
 
+        Log.d("FILTER_DEBUG", "Nearby vendors count: " + nearbyList.size());
+
         if (nearbyList.isEmpty()) {
             Toast.makeText(requireContext(), "No nearby vendors found", Toast.LENGTH_SHORT).show();
+        } else {
+            recyclerView.setAdapter(new MainAdapterrecy(getContext(), nearbyList));
+            recyclerView.getAdapter().notifyDataSetChanged();
         }
-
-        recyclerView.setAdapter(new MainAdapterrecy(getContext(), nearbyList));
     }
+
     private String extractLocality(String location) {
         if (location == null || location.isEmpty()) return null;
 
-        // Split the address if it contains commas and pick the most relevant part
-        String[] parts = location.split(",");
-        if (parts.length > 1) {
-            return parts[0].trim(); // Taking the first part (most relevant for localities)
+        // Simplify by taking the most relevant part of the address
+        String[] parts = location.toLowerCase().split(",");
+        for (String part : parts) {
+            for (String area : Arrays.asList("matunga", "ghatkopar", "dadar", "thane", "ambivli")) {
+                if (part.contains(area)) {
+                    return area.trim(); // Return matched area
+                }
+            }
         }
-        return location.trim();
+        return null;
     }
 
     private void fetchVendorData() {
@@ -247,22 +266,24 @@ public class HomeFragment extends Fragment {
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (!addresses.isEmpty()) {
                         Address address = addresses.get(0);
-                        String locality = address.getLocality(); // Extracting only the locality
+                        String fullAddress = address.getAddressLine(0); // Get full address
 
-                        if (locality != null) {
-                            textmp.setText(locality); // Set only the locality, not full address
+                        if (fullAddress != null && !fullAddress.isEmpty()) {
+                            textmp.setText(fullAddress); // Set full address
                         } else {
-                            textmp.setText("Unknown Location");
+                            textmp.setText("Address not found");
                         }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Toast.makeText(requireContext(), "Unable to fetch address", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(requireContext(), "Please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Location not found. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode,permissions,grantResults);
 
@@ -277,15 +298,12 @@ public class HomeFragment extends Fragment {
         }
 
     }
-
-
     private void flip_image(int i) {
         ImageView view =new ImageView(requireContext());
         view.setBackgroundResource(i);
         v_flipper.addView(view);
         v_flipper.setFlipInterval(4000);
         v_flipper.setAutoStart(true);
-
         v_flipper.setInAnimation(requireContext(),android.R.anim.slide_in_left);
         v_flipper.setOutAnimation(requireContext(),android.R.anim.slide_out_right);
     }

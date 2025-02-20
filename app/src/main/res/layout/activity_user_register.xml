@@ -100,7 +100,7 @@
        android:layout_width="270dp"
        android:layout_height="48dp"
        android:layout_marginTop="328dp"
-       android:autofillHints="phone"
+       android:autofillHints="password"
        android:background="@drawable/input_bg"
        android:ems="10"
        android:gravity="center"

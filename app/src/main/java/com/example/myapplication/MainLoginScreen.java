@@ -10,8 +10,6 @@ import android.widget.Button;
 public class MainLoginScreen extends AppCompatActivity {
     private Button User;
     private Button vendor;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -35,10 +35,9 @@ public class UserHome extends AppCompatActivity {
                 }else if(itemId==R.id.navExplore){
                     loadFragment(new SearchFragment(),false);
 
-                }else if(itemId==R.id.navafav){
-                    loadFragment(new FavFragment(),false);
+                }
 
-                }else {// user profile
+                else {// user profile
                     loadFragment(new UserProfileFragment(),false);
 
                 }
