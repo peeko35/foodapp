@@ -115,7 +115,7 @@
             <TextView
                 android:id="@+id/profilePassword"
                 android:layout_width="159dp"
-                android:layout_height="38dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:inputType="textPassword"
                 android:text="password"
