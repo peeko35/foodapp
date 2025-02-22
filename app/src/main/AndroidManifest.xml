@@ -22,8 +22,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".edit_profile"
+            android:name=".VeditProfile"
             android:exported="false" />
+        <activity
+            android:name=".edit_profile"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Maps2Page"
             android:exported="false" />

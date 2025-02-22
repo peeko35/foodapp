@@ -40,6 +40,15 @@ public class UserProfileFragment extends Fragment {
         profileNam=view.findViewById(R.id.profileName);
         profilepaswd=view.findViewById(R.id.profilePassword);
         editProfile=view.findViewById(R.id.editProfile);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(requireActivity(), edit_profile.class);
+                startActivity(intent);
+
+            }
+        });
         user = auth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 

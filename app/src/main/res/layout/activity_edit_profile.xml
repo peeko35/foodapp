@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/back"
     tools:context=".edit_profile">
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="346dp"
-        android:layout_height="336dp"
+        android:layout_width="351dp"
+        android:layout_height="403dp"
         android:layout_margin="24dp"
         android:background="@drawable/white_background"
         android:orientation="vertical"
@@ -20,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.643">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,23 +38,25 @@
             android:padding="8dp">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="11dp"
+                android:layout_height="34dp"
                 android:layout_weight="1"
                 android:text="Name"
                 android:textColor="@color/lavender"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/profame"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="name"
+                android:minHeight="48dp"
+                android:padding="12dp"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:hint="Enter your name"/>
         </LinearLayout>
 
         <View
@@ -76,15 +80,18 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/profEmail"
-                android:layout_width="159dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="email"
+                android:minHeight="48dp"
+                android:padding="12dp"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:hint="Enter your email" />
+
         </LinearLayout>
 
         <View
@@ -108,17 +115,18 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/profPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="password"
                 android:inputType="textPassword"
-                android:autofillHints="password"
+                android:minHeight="48dp"
+                android:padding="12dp"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:hint="Enter your password" />
         </LinearLayout>
 
         <View
@@ -133,6 +141,7 @@
             android:layout_width="117dp"
             android:layout_height="55dp"
             android:layout_marginTop="25dp"
+            android:layout_marginLeft="100dp"
             android:background="@color/lavender"
             android:text="Save"
             android:textStyle="bold" />
