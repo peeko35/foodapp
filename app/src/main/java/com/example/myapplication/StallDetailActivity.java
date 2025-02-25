@@ -1,7 +1,10 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +22,15 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StallDetailActivity extends AppCompatActivity {
@@ -32,6 +40,9 @@ public class StallDetailActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     Button btn_show_comments;
     String vendorId;
+    CatAdapter adapter;
+    List<catModel> datalist;
+    RecyclerView recyclcategory;
 
 
     @Override
@@ -43,6 +54,7 @@ public class StallDetailActivity extends AppCompatActivity {
         foodprice = findViewById(R.id.foodprice);
         detailimg = findViewById(R.id.detailimg);
         ratingstar = findViewById(R.id.ratingstar);
+        recyclcategory = findViewById(R.id.recyclcategory);
         mapnav=findViewById(R.id.mapnav);
         mapnav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +72,63 @@ public class StallDetailActivity extends AppCompatActivity {
             reviewBottomSheet.show(getSupportFragmentManager(), "ReviewsBottomSheet");
         });
 
+        recyclcategory.setLayoutManager(new LinearLayoutManager(this));
+        datalist = new ArrayList<>();
+        adapter = new CatAdapter(datalist);
+        recyclcategory.setAdapter(adapter);
 
+        vendorId = getIntent().getStringExtra("vendorId");
+        String imageUrl = getIntent().getStringExtra("imageUrl");
+        String description = getIntent().getStringExtra("description");
+        String price = getIntent().getStringExtra("price");
+
+        // Load the main stall details
+        if (imageUrl != null) {
+            Glide.with(this).load(imageUrl).into(detailimg);
+        }
+        desctext.setText("Description: " + description);
+        foodprice.setText("Price: ₹" + price);
+
+        // Load the additional stall details
+        if (vendorId != null) {
+            loadAdditionalStallDetails();
+        } else {
+            Toast.makeText(this, "Vendor ID is missing!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void loadAdditionalStallDetails() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Vendors")
+                .child(vendorId)
+                .child("stallDetails");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                datalist.clear();
+                boolean isFirst = true;
+
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    if (isFirst) {
+                        isFirst = false;  // Skip the first entry
+                        continue;
+                    }
+
+                    String foodName = childSnapshot.child("foodName").getValue(String.class);
+                    String description = childSnapshot.child("description").getValue(String.class);
+                    String imageUrl = childSnapshot.child("imageUrl").getValue(String.class);
+                    String price = childSnapshot.child("price").getValue(String.class);
+
+                    catModel stallDetail = new catModel(foodName,  imageUrl, price,description);
+                    datalist.add(stallDetail);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FirebaseError", error.getMessage());
+            }
+        });
         vendorId = getIntent().getStringExtra("vendorId");
         String imageUrl = getIntent().getStringExtra("imageUrl");
         String description = getIntent().getStringExtra("description");

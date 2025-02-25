@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B2D9E3"
     tools:context=".Stall_Account">
 
     <ScrollView
         android:layout_width="0dp"
         android:scrollbars="none"
         android:layout_height="match_parent"
-
         app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,12 +45,23 @@
             app:layout_constraintTop_toTopOf="@+id/imgback"/>
 
 
+        <TextView
+            android:layout_width="87dp"
+            android:layout_height="30dp"
+            android:text="Food"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="79dp" />
+
         <EditText
             android:id="@+id/editviewname"
             android:layout_width="344dp"
             android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="88dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="116dp"
             android:background="@drawable/vendorinput"
             android:ems="10"
             android:gravity="center"
@@ -60,13 +71,24 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descrption"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="179dp" />
+
         <EditText
             android:id="@+id/descption"
             android:layout_width="348dp"
             android:layout_height="62dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="12dp"
 
-            android:layout_marginTop="156dp"
+            android:layout_marginTop="216dp"
             android:background="@drawable/vendorinput"
             android:ems="10"
             android:gravity="center"
@@ -76,12 +98,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:layout_width="82dp"
+            android:layout_height="31dp"
+            android:text="Price"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="289dp" />
+
         <EditText
             android:id="@+id/price"
             android:layout_width="344dp"
             android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="232dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="324dp"
             android:background="@drawable/vendorinput"
             android:ems="10"
             android:gravity="center"
@@ -95,7 +128,7 @@
             android:layout_width="167dp"
             android:layout_height="30dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="336dp"
+            android:layout_marginTop="396dp"
             android:text="Select image"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -108,7 +141,7 @@
             android:layout_width="226dp"
             android:layout_height="116dp"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="388dp"
+            android:layout_marginTop="440dp"
             android:src="@drawable/addimg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -118,7 +151,7 @@
             android:layout_width="150dp"
             android:layout_height="59dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="532dp"
+            android:layout_marginTop="580dp"
             android:text="Upload"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -129,8 +162,8 @@
             android:id="@+id/save"
             android:layout_width="133dp"
             android:layout_height="52dp"
-            android:layout_marginStart="152dp"
-            android:layout_marginTop="632dp"
+            android:layout_marginStart="144dp"
+            android:layout_marginTop="660dp"
             android:text="Save"
             android:textColor="@color/black"
             android:textStyle="bold"

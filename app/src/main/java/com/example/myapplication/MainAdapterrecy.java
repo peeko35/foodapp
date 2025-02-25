@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.CollationElementIterator;
 import java.util.List;
 import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
@@ -100,11 +101,6 @@ class MyViewHolder extends RecyclerView.ViewHolder{
         ratetext = itemView.findViewById(R.id.ratetext);
         ratingBar = itemView.findViewById(R.id.ratingBar);
         location=itemView.findViewById(R.id.location);
-
-
-
-
-
 
     }
 }
