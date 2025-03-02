@@ -54,6 +54,7 @@
     <string name="name">Name</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="Userlogout">Logout</string>
+    <string name="add_menu">Add Menu</string>
 
 
 </resources>

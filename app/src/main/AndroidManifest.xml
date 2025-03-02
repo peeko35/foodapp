@@ -22,6 +22,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".fooditemsrecycle"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".Fooditems"
+            android:exported="false" />
+        <activity
             android:name=".Categoryrecyclview"
             android:exported="false" />
         <activity

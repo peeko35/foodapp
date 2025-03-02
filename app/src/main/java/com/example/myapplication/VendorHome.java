@@ -16,7 +16,7 @@ public class VendorHome extends AppCompatActivity {
     Button sigout;
     FirebaseUser Vuser;
     CardView cardViewacc;
-    CardView cardViewprofile;
+    CardView cardViewprofile,carditem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class VendorHome extends AppCompatActivity {
         sigout=findViewById(R.id.sigout);
         cardViewprofile=findViewById(R.id.cardViewprofile);
         cardViewacc=findViewById(R.id.cardViewacc);
+        carditem=findViewById(R.id.carditem);
         Vuser=auth.getCurrentUser();
         if(Vuser==null){
             Intent intent = new Intent(getApplicationContext(),VendorLogin.class);
@@ -58,6 +59,14 @@ public class VendorHome extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
+            }
+        });
+        carditem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),Fooditems.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
