@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,32 +18,33 @@ public class VendorHome extends AppCompatActivity {
     FirebaseUser Vuser;
     CardView cardViewacc;
     CardView cardViewprofile,carditem;
+    ImageView imaggeback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_home);
         auth=FirebaseAuth.getInstance();
-        sigout=findViewById(R.id.sigout);
+
         cardViewprofile=findViewById(R.id.cardViewprofile);
         cardViewacc=findViewById(R.id.cardViewacc);
         carditem=findViewById(R.id.carditem);
         Vuser=auth.getCurrentUser();
+        imaggeback= findViewById(R.id.imggbackk);
         if(Vuser==null){
             Intent intent = new Intent(getApplicationContext(),VendorLogin.class);
             startActivity(intent);
             finish();
         }
-
-        sigout.setOnClickListener(new View.OnClickListener() {
+        imaggeback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(),VendorLogin.class);
+                Intent intent = new Intent(getApplicationContext(),MainLoginScreen.class);
                 startActivity(intent);
                 finish();
             }
         });
+
         cardViewacc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

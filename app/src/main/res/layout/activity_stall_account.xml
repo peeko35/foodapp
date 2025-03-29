@@ -4,174 +4,164 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B2D9E3"
+    android:background="#9AD8EA"
     tools:context=".Stall_Account">
 
     <ScrollView
-        android:layout_width="0dp"
-        android:scrollbars="none"
-        android:layout_height="match_parent"
-        app:layout_constraintBaseline_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgback"
-            android:layout_width="35dp"
-            android:layout_height="33dp"
-            android:src="@drawable/backbutton"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="5dp"
-            tools:layout_editor_absoluteY="7dp" />
+            <ImageView
+                android:id="@+id/imgback"
+                android:layout_width="35dp"
+                android:layout_height="33dp"
+                android:src="@drawable/backbuttonn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="10dp" />
 
-        <TextView
-            android:layout_width="163dp"
-            android:layout_height="48dp"
-            android:text="Stall Details"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="124dp"
-            tools:layout_editor_absoluteY="7dp"
-           app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imgback"
-            app:layout_constraintTop_toTopOf="@+id/imgback"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stall Details"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/imgback"
+                app:layout_constraintTop_toTopOf="@id/imgback"
+                app:layout_constraintBottom_toBottomOf="@id/imgback"
+                android:layout_marginStart="10dp" />
 
+            <TextView
+                android:id="@+id/label_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="20dp" />
 
-        <TextView
-            android:layout_width="87dp"
-            android:layout_height="30dp"
-            android:text="Food"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="12dp"
-            tools:layout_editor_absoluteY="79dp" />
+            <EditText
+                android:id="@+id/editviewname"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/vendorinput"
+                android:hint=" Enter Food Name"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_food"
+                android:layout_marginHorizontal="12dp" />
 
-        <EditText
-            android:id="@+id/editviewname"
-            android:layout_width="344dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="116dp"
-            android:background="@drawable/vendorinput"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="@string/enter_food_name"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            <TextView
+                android:id="@+id/label_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editviewname"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="20dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Descrption"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="12dp"
-            tools:layout_editor_absoluteY="179dp" />
+            <EditText
+                android:id="@+id/descption"
+                android:layout_width="0dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/vendorinput"
+                android:hint=" Food Description"
+                android:inputType="textMultiLine"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_description"
+                android:layout_marginHorizontal="12dp" />
 
-        <EditText
-            android:id="@+id/descption"
-            android:layout_width="348dp"
-            android:layout_height="62dp"
-            android:layout_marginStart="12dp"
+            <TextView
+                android:id="@+id/label_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descption"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="20dp" />
 
-            android:layout_marginTop="216dp"
-            android:background="@drawable/vendorinput"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="@string/food_descrption"
-            android:inputType="textMultiLine"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/vendorinput"
+                android:hint=" Food Price"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_price"
+                android:layout_marginHorizontal="12dp" />
 
-        <TextView
-            android:layout_width="82dp"
-            android:layout_height="31dp"
-            android:text="Price"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="12dp"
-            tools:layout_editor_absoluteY="289dp" />
+            <TextView
+                android:id="@+id/label_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Select Image"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/price"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="20dp" />
 
-        <EditText
-            android:id="@+id/price"
-            android:layout_width="344dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="324dp"
-            android:background="@drawable/vendorinput"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="@string/food_price"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            <ImageView
+                android:id="@+id/selectimg"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/addimg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_image" />
 
-        <TextView
-            android:layout_width="167dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="396dp"
-            android:text="Select image"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/uplo"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:text="Upload"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selectimg"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="12dp" />
 
-        <ImageView
-            android:id="@+id/selectimg"
-            android:layout_width="226dp"
-            android:layout_height="116dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="440dp"
-            android:src="@drawable/addimg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/uplo"
-            android:layout_width="150dp"
-            android:layout_height="59dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="580dp"
-            android:text="Upload"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/save"
-            android:layout_width="133dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="144dp"
-            android:layout_marginTop="660dp"
-            android:text="Save"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <Button
+                android:id="@+id/save"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:text="Save"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selectimg"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="12dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

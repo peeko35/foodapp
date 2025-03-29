@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +21,7 @@ public class VeditProfile extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference dbref;
     String vendorId;
+    ImageView imgbackkbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +37,21 @@ public class VeditProfile extends AppCompatActivity {
             Toast.makeText(this, "Vendor not logged in!", Toast.LENGTH_SHORT).show();
             finish(); // Close activity if no user is logged in
         }
+        imgbackkbutton=findViewById(R.id.imgbackbutton);
         stallnme=findViewById(R.id.stallnme);
         Vadd=findViewById(R.id.Vadd);
         Vloc=findViewById(R.id.Vloc);
         phne=findViewById(R.id.phne);
         Vsave=findViewById(R.id.VSave);
 
+        imgbackkbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),VendorHome.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         Vsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,15 +66,12 @@ public class VeditProfile extends AppCompatActivity {
         String newAdd=Vadd.getText().toString().trim();
         String newLoc=Vloc.getText().toString().trim();
         String newphne=phne.getText().toString().trim();
-
-
         dbref.child("stallName").setValue(newname);
         dbref.child("address").setValue(newAdd);
         dbref.child("location").setValue(newLoc);
         dbref.child("phone").setValue(newphne)
          .addOnSuccessListener(aVoid -> Toast.makeText(VeditProfile.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(VeditProfile.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-
 
     }
 }

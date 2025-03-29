@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +29,7 @@ public class Fooditems extends AppCompatActivity {
     private List<catModel> foodlist;
     private DatabaseReference databaseReference;
     private String currentVendorId;
+    ImageView imgbackkk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,18 @@ public class Fooditems extends AppCompatActivity {
         setContentView(R.layout.activity_fooditems);
         recyclerView = findViewById(R.id.recycleItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        imgbackkk=findViewById(R.id.imgbackkk);
         foodlist = new ArrayList<>();
         foodAdapter = new FooditemAdapter(foodlist);
         recyclerView.setAdapter(foodAdapter);
+        imgbackkk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),VendorHome.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
