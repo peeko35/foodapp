@@ -43,7 +43,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Maps2Page"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -57,7 +58,8 @@
         -->
         <activity
             android:name=".MapsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".StallDetailActivity"
             android:exported="false"
@@ -88,7 +90,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".VendorLogin"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".UserRegister"
             android:exported="false"
