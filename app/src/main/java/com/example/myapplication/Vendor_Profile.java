@@ -3,12 +3,14 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,7 +30,9 @@ public class Vendor_Profile extends AppCompatActivity {
     private EditText vendorPhone, stallName, stallAddress, pincode;
     private Spinner locationSpinner;
     private Button saveButton;
+
     private DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +45,15 @@ public class Vendor_Profile extends AppCompatActivity {
         locationSpinner = findViewById(R.id.locspin);
         saveButton = findViewById(R.id.btn_save);
 
+
+
+
         databaseReference = FirebaseDatabase.getInstance().getReference("Vendors");
 
         String[] locations = {"select location", "GhatKopar", "Dadar", "Matunga", "Thane","Ambivli"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(adapter);
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

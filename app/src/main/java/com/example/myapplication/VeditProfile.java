@@ -47,7 +47,7 @@ public class VeditProfile extends AppCompatActivity {
         imgbackkbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),VendorHome.class);
+                Intent intent = new Intent(getApplicationContext(),Profile_details.class);
                 startActivity(intent);
                 finish();
             }

@@ -25,6 +25,7 @@ public class Profile_details extends AppCompatActivity {
      TextView VstallNm,Vphone,Vadd,Vloc;
      Button Vlogout,Vedit;
     FirebaseAuth auth;
+    ImageView imgbutton;
     DatabaseReference databaseReference;
     FirebaseUser vendor;
 
@@ -39,7 +40,17 @@ public class Profile_details extends AppCompatActivity {
         Vadd=findViewById(R.id.Vendoradd);
         Vloc=findViewById(R.id.Vendorloc);
         Vlogout=findViewById(R.id.Vlogout);
+        imgbutton=findViewById(R.id.imgkbutton);
         Vedit=findViewById(R.id.VeditProfile);
+
+        imgbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),VendorHome.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         Vedit.setOnClickListener(new View.OnClickListener() {
             @Override
