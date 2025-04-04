@@ -9,12 +9,10 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginLeft="60dp"
+        android:layout_width="267dp"
+        android:layout_height="63dp"
+        android:layout_marginLeft="80dp"
         android:layout_marginTop="50dp"
-
         android:text="STREET FOOD"
         android:textColor="#ECE6DD"
         android:textSize="40sp"
