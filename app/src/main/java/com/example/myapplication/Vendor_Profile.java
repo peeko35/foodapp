@@ -99,7 +99,7 @@ public class Vendor_Profile extends AppCompatActivity {
     }
 
     private boolean isValidAddress(String address) {
-        String regex = "^(.*?),\\s*(Mumbai)?\\s*-?\\s*(\\d{6})?(?:\\s*\\((.*?)\\))?$";
+        String regex = "^(.*?),?\\s*(.*?),?\\s*(Mumbai)$";
         return address.matches(regex);
     }
 }
